@@ -1,1 +1,70 @@
 /* You can add global styles to this file, and also import other style files */
+header {
+    background-color: white;
+    padding: 1rem 5%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: shadow;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 25px;
+}
+
+.logo-img{
+    width: 80px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo span {
+    color: green;
+}
+
+.search-bar {
+    position: relative;
+    width: 40%;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #10a524;
+}
+
+.cart-icon {
+    position: relative;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+#cartCount {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
