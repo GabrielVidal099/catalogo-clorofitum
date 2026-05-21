@@ -1,0 +1,17 @@
+<section class="catalog-page">
+  <h1>Catálogo Clorofitum</h1>
+
+  <div class="product-grid">
+    @for (product of products; track product.id) {
+      <div class="product-card">
+        <img [src]="product.image" [alt]="product.name" />
+
+        <div class="product-card-content">
+          <h2>{{ product.name }}</h2>
+          <p>{{ product.category }}</p>
+          <span>{{ product.line }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</section>
