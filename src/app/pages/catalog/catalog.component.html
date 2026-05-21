@@ -1,4 +1,4 @@
-<p>{{ current }}</p>
+
 <section class="carrosel">
 
     <div class="slides">
@@ -12,6 +12,7 @@
             src="https://static.clorofitum.com.br/banner/1778851060085-021876536533170432.webp"
             class="slide"
             [ngClass]="{'active': current === 1}">
+            
 
         <img
             src="https://static.clorofitum.com.br/banner/1778850994132-034089482570123786.webp"
@@ -38,12 +39,14 @@
   <div class="product-grid">
     @for (product of products; track product.id) {
       <div class="product-card">
-        <img [src]="product.image" [alt]="product.name" />
+        
 
-        <div class="product-card-content">
-          <h2>{{ product.name }}</h2>
-          <p>{{ product.category }}</p>
-          <span>{{ product.line }}</span>
+        <div class="product-info">
+          <p class="product-category">{{ product.category }}</p>
+          <h3 class="product-title">${product.title}</h3>
+          <p class="product-price">${product.price}</p>
+          <p class="product-price desconto">${product.price_descont || ""}</p>
+          <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
         </div>
       </div>
     }

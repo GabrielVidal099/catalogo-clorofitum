@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef
+} from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
@@ -10,18 +15,20 @@ import { ProductService } from '../../core/services/product.service';
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.css',
 })
-export class CatalogComponent implements OnInit, OnDestroy{
+export class CatalogComponent implements OnInit, OnDestroy {
 
   products: Product[] = [];
 
   current = 0;
-  totalSlide=3;
+  totalSlides = 3;
   autoSlide: any;
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    console.log('ngOnInit');
     this.products = this.productService.getProducts();
     this.startAutoSlide();
   }
@@ -30,40 +37,38 @@ export class CatalogComponent implements OnInit, OnDestroy{
     clearInterval(this.autoSlide);
   }
 
-  showSlide(index: number): void {
-    this.current = index;
-  }
-
   nextSlide(): void {
     this.current++;
 
-    if (this.current >= this.totalSlide) {
+    if (this.current >= this.totalSlides) {
       this.current = 0;
     }
-     console.log('slide:', this.current);
 
-    this.showSlide(this.current);
+    this.cdr.detectChanges();
   }
 
   prevSlide(): void {
     this.current--;
 
     if (this.current < 0) {
-      this.current = this.totalSlide- 1;
+      this.current = this.totalSlides - 1;
     }
 
-    this.showSlide(this.current);
+    this.cdr.detectChanges();
   }
 
   startAutoSlide(): void {
 
-    console.log('startAutoSlide')
-    if (this.autoSlide){
-      clearInterval(this.autoSlide)
-    }
     this.autoSlide = setInterval(() => {
-      console.log('timer', this.current);
-      this.nextSlide();
-    }, 4000);
+
+      this.current++;
+
+      if (this.current >= this.totalSlides) {
+        this.current = 0;
+      }
+
+      this.cdr.detectChanges();
+
+    }, 3000);
   }
 }

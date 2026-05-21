@@ -1,22 +1,17 @@
 import { Product } from '../models/product.model';
 
 export const PRODUCTS: Product[] = [
-  {
-    id: 1,
-    name: 'Shampoo Curinga',
-    category: 'Shampoo',
-    line: 'Curinga',
-    image: 'assets/images/products/shampoo-curinga.png',
-    description: 'Produto indicado para limpeza e cuidado diário dos fios.',
-    features: ['Limpeza suave', 'Brilho', 'Uso diário'],
-  },
-  {
-    id: 2,
-    name: 'Máscara Fonte da Juventude',
-    category: 'Máscara',
-    line: 'Fonte da Juventude',
-    image: 'assets/images/products/mascara-fonte-da-juventude.png',
-    description: 'Máscara indicada para tratamento e hidratação dos fios.',
-    features: ['Hidratação', 'Maciez', 'Nutrição'],
-  },
+  
+   {
+        id: 1,
+        title: "Shampoo SOuro 24k Gold",
+        category: "Shampoo",
+        price: "De R$ 64,31",
+        price_descont: "Por R$ 30,00",
+        image: "assets/img/907 - 05 - Tratamento iluminado.png",
+        description: "Enriquecido com Vitamina C e Ácido Hialurônico, este sérum proporciona luminosidade imediata e hidratação profunda."
+    },
+  
+    
+  
 ];
