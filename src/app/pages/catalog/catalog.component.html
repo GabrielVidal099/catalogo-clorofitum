@@ -1,5 +1,39 @@
+<p>{{ current }}</p>
+<section class="carrosel">
+
+    <div class="slides">
+
+        <img
+            src="https://static.clorofitum.com.br/banner/1778850865487-05861844061926189.webp"
+            class="slide"
+            [ngClass]="{'active': current === 0}">
+
+        <img
+            src="https://static.clorofitum.com.br/banner/1778851060085-021876536533170432.webp"
+            class="slide"
+            [ngClass]="{'active': current === 1}">
+
+        <img
+            src="https://static.clorofitum.com.br/banner/1778850994132-034089482570123786.webp"
+            class="slide"
+            [ngClass]="{'active': current === 2}">
+
+    </div>
+
+    <button class="prev" (click)="prevSlide()">
+        &#10094;
+    </button>
+
+    <button class="next" (click)="nextSlide()">
+        &#10095;
+    </button>
+
+</section>
+
+
 <section class="catalog-page">
   <h1>Catálogo Clorofitum</h1>
+
 
   <div class="product-grid">
     @for (product of products; track product.id) {
