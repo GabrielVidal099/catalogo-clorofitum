@@ -1,11 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
 header {
-    background-color: white;
+    background-color: var(--white);
     padding: 1rem 5%;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: shadow;
+    box-shadow: var(--shadow);
 }
 
 nav {
@@ -67,4 +66,4 @@ nav {
     font-size: 0.7rem;
     padding: 2px 6px;
     border-radius: 50%;
-}
+} 
