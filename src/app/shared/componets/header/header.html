@@ -1,0 +1,111 @@
+<header>
+  <nav>
+
+    <div class="logo">
+      <img src="assets/logo_clorofitum_degrade.png"
+           class="logo-img">
+      Clorofitum <span>Cosméticos</span>
+    </div>
+
+    <div class="search-bar">
+      <input type="text"
+             placeholder="Buscar produtos...">
+      <i class="fas fa-search"></i>
+    </div>
+
+    <!-- ICON -->
+    <div
+      class="cart-icon"
+      (click)="toggleCart()">
+
+      <img src="assets/icon_cart.png">
+
+      @if (cartCount > 0) {
+        <span class="cart-count">
+          {{ cartCount }}
+        </span>
+      }
+
+    </div>
+
+  </nav>
+
+  <!-- CART -->
+  <div
+  class="cart-panel"
+  [class.active]="showCart">
+
+  <div class="cart-content">
+
+    <div class="cart-header">
+      <h2>Meu Carrinho</h2>
+
+      <span
+        class="close-cart"
+        (click)="toggleCart()">
+        ×
+      </span>
+    </div>
+
+    <div class="cart-items">
+
+      @for (item of cart; track item.id) {
+
+        <div class="cart-item">
+
+          <img [src]="item.image">
+
+          <div class="cart-item-info">
+
+            <div class="cart-item-title">
+              {{ item.title }}
+            </div>
+
+            <div class="cart-item-price">
+              R$ {{ item.precoNumerico.toFixed(2) }}
+            </div>
+
+            <div class="quantity-controls">
+
+              <!-- DIMINUIR -->
+              <button
+                (click)="diminuir.emit(item.id)">
+                -
+              </button>
+
+              <span>
+                {{ item.quantidade }}
+              </span>
+
+              <!-- AUMENTAR -->
+              <button
+                (click)="aumentar.emit(item.id)">
+                +
+              </button>
+
+              <!-- REMOVER -->
+              <button
+                class="remove-item"
+                (click)="remover.emit(item.id)">
+                x
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+          <div class="cart-total">
+      Total:
+      R$ {{ totalPreco.toFixed(2) }}
+    </div>
+    </div>
+
+
+
+  </div>
+</div>
+</header>
