@@ -1,3 +1,11 @@
+<app-header
+  [cartCount]="cartCount"
+  [cart]="cart"
+  (aumentar)="aumentarQuantidade($event)"
+  (diminuir)="diminuirQuantidade($event)"
+  (remover)="removerItem($event)">
+</app-header>
+
 
 <section class="carrosel">
 
@@ -32,23 +40,86 @@
 </section>
 
 
+    <section class="filters">
+    <button class="filter-btn active" {class,active}="selectedCategory === 'Promoções'"(click)="filterProducts('Promoções')">
+        Promoções
+    </button>
+
+    <button class="filter-btn"  {class,active}="selectedCategory === 'Ouro'"(click)="filterProducts('Ouro')">
+        Ouro
+    </button>
+
+    <button class="filter-btn" {class,active}="selectedCategory === 'Coffee'"(click)="filterProducts('Coffee')">
+        Coffee
+    </button>
+
+    <button class="filter-btn" {class,active}="selectedCategory === 'Por Linha'"(click)="filterProducts('Por Linha')">
+        Por Linha
+    </button>
+</section>
+
+
 <section class="catalog-page">
-  <h1>Catálogo Clorofitum</h1>
+  <h1 class="catclor">Catálogo Clorofitum</h1>
 
 
   <div class="product-grid">
-    @for (product of products; track product.id) {
-      <div class="product-card">
-        
+    @for (product of filteredProducts; track product.id) {
+        <div class="product-card" (click)="openProductModal(product)">
+            <img src="{{product.image}}" 
+                alt="{{product.title}}" 
+                class="product-image">
 
-        <div class="product-info">
-          <p class="product-category">{{ product.category }}</p>
-          <h3 class="product-title">${product.title}</h3>
-          <p class="product-price">${product.price}</p>
-          <p class="product-price desconto">${product.price_descont || ""}</p>
-          <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
+            <div class="product-info">
+                <p class="product-category">{{ product.category }}</p>
+                <h3 class="product-title">{{product.title}}</h3>
+                <p class="product-price">{{product.price}}</p>
+                <p class="product-price desconto">{{product.price_descont || ""}}</p>
+                <button class="add-to-cart-btn" (click)="addToCart(product);$event.stopPropagation()">Adicionar ao Carrinho</button>
+            </div>
         </div>
-      </div>
+
     }
   </div>
 </section>
+
+@if(showModal){
+
+    <div class="modal-overlay" (click)="closeModal()">
+
+        <div class="modal"(click)="$event.stopPropagation()">
+
+            <button
+            class="close-btn"
+            (click)="closeModal()">
+            ×
+            </button>
+            <div class="modal-content">
+                <div class="modal-details">
+                    <img src="{{selectedProduct?.image}}" 
+                            alt="product.title">
+                    <div>
+                        <h2>{{selectedProduct?.title}}</h2>
+
+                        <p class="product-category">
+                            {{selectedProduct?.category}}
+                        </p>
+
+                        <p style="margin:1rem 0;">
+                            {{selectedProduct?.description}}
+                        </p>
+                        
+                        <p class="product-price"
+                        style="font-size:1.5rem;">
+                            {{selectedProduct?.price}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<a href="https://wa.me/5531992171465" class="whatsapp-float" target="_blank">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>

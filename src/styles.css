@@ -1,75 +1,13 @@
+:root {
+    --primary-color: #008a29;
+    --secondary-color: #0a5200;
+    --text-color: #333;
+    --light-bg: #fefae0;
+    --white: #ffffff;
+    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
 body{
 margin: 0;
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-header {
-    background-color: white;
-    padding: 1rem 5%;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-}
-
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 25px;
-}
-
-.logo-img{
-    width: 80px;
-    height: 40px;
-    object-fit: contain;
-}
-
-.logo span {
-    color: green;
-}
-
-.search-bar {
-    position: relative;
-    width: 40%;
-}
-
-.search-bar input {
-    width: 100%;
-    padding: 0.8rem 1rem 0.8rem 2.5rem;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    outline: none;
-}
-
-.search-bar i {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #10a524;
-}
-
-.cart-icon {
-    position: relative;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-#cartCount {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background-color: green;
-    color: white;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 50%;
-} 
