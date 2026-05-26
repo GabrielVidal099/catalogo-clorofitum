@@ -153,15 +153,15 @@ export class CatalogComponent implements OnInit, OnDestroy {
     // =========================
   // FILTER
   // =========================
-
   filterProducts2(title: string): void {
 
     this.selectedTitle = title;
 
-    this.filteredProducts =
-      this.products.filter(
-        p => p.title === title
-      );
+    const search = title.toLowerCase().trim();
+
+    this.filteredProducts = this.products.filter(
+      p => p.title.toLowerCase().includes(search)
+    );
   }
 
   // =========================
