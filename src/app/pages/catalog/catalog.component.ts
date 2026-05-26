@@ -11,6 +11,9 @@ import { NgClass } from '@angular/common';
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { Header } from "../../shared/componets/header/header";
+import { ActivatedRoute } from '@angular/router';
+import { clients } from '../../core/models/client.models';
+import { CLIENTS } from '../../core/data/client.mocks';
 
 @Component({
   selector: 'app-catalog',
@@ -53,23 +56,42 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   selectedCategory = 'Promoções';
+  selectedTitle = '';
   selectedProduct: Product | null = null;
+  contatos: clients[] = CLIENTS;
   showModal = false;
 
   current = 0;
   totalSlides = 3;
   autoSlide: any;
+  consultor: any;
+  telefone: any;
 
   constructor(
     private productService: ProductService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private route:ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
-    this.products = this.productService.getProducts();
-    this.filteredProducts = this.products;
-    this.startAutoSlide();
+ ngOnInit(): void {
+
+  this.products = this.productService.getProducts();
+  this.filteredProducts = this.products;
+
+  const slug = this.route.snapshot.paramMap.get('name');
+
+  console.log('slug:', slug);
+
+  if (slug) {
+    this.consultor = this.contatos.find(
+      c => c.slug === slug
+    );
   }
+
+  console.log('consultor:', this.consultor);
+
+  this.startAutoSlide();
+}
 
   ngOnDestroy(): void {
     clearInterval(this.autoSlide);
@@ -128,6 +150,20 @@ export class CatalogComponent implements OnInit, OnDestroy {
       );
   }
 
+    // =========================
+  // FILTER
+  // =========================
+
+  filterProducts2(title: string): void {
+
+    this.selectedTitle = title;
+
+    this.filteredProducts =
+      this.products.filter(
+        p => p.title === title
+      );
+  }
+
   // =========================
   // MODAL
   // =========================
@@ -147,12 +183,15 @@ export class CatalogComponent implements OnInit, OnDestroy {
   // =========================
 
   addToCart(product: any): void {
-
-    const precoTexto =
-      product.price_descont || product.price;
-
-    const precoNumerico = Number(
-      precoTexto
+    let precoTexto = ''
+    if(product.price_descont === " "){
+       precoTexto = product.price;
+    }
+    else{
+       precoTexto = product.price_descont;
+    }
+       const precoNumerico = Number(
+        precoTexto
         .replace(/[^0-9,]/g, '')
         .replace(',', '.')
     );
@@ -222,5 +261,18 @@ export class CatalogComponent implements OnInit, OnDestroy {
   updateCart(): void {
     
   }
+
+  getWhatsappLink(): string {
+  if (!this.consultor) {
+    return 'https://wa.me/553183453133';
+  }
+
+  const mensagem = encodeURIComponent(
+    'Olá, gostaria de mais informações.'
+  );
+
+  return `https://wa.me/${this.consultor.telefone}?text=${mensagem}`;
+}
+
 
 }

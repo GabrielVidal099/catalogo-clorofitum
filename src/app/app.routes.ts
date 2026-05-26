@@ -5,5 +5,10 @@ export const routes: Routes = [
   {
     path: '',
     component: CatalogComponent,
+    pathMatch: 'full'
+  },
+  {
+  path: ':name',
+  component: CatalogComponent,
   },
 ];

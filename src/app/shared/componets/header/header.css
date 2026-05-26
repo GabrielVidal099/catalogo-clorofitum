@@ -157,3 +157,178 @@ nav {
     color: white;
     cursor: pointer;
 }
+.remove-item {
+    color: rgb(255, 255, 255)!important;
+    background-color: rgb(255, 0, 0) !important;
+}
+
+.finalizarPedido{
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #25D366;
+
+    color: white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    margin-top: 15px;
+}
+/* =========================
+   RESPONSIVIDADE HEADER/CARRINHO
+========================= */
+@media (max-width: 768px) {
+
+    /* Header */
+    header {
+        padding: 1rem;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    /* Logo */
+    .logo {
+        font-size: 20px;
+        gap: 8px;
+    }
+
+    .logo-img {
+        width: 60px;
+        height: 35px;
+    }
+
+    /* Barra de pesquisa */
+    .search-bar {
+        width: 100%;
+        order: 3;
+    }
+
+    .search-bar input {
+        padding: 0.7rem 1rem 0.7rem 2.3rem;
+        font-size: 14px;
+    }
+
+    .search-bar i {
+        left: 0.8rem;
+    }
+
+    /* Ícone do carrinho */
+    .cart-icon {
+        font-size: 1.3rem;
+    }
+
+    .cart-count {
+        font-size: 0.6rem;
+        padding: 2px 5px;
+    }
+
+    /* Painel do carrinho */
+    .cart-panel {
+        width: 100%;
+    }
+
+    .cart-content {
+        padding: 15px;
+    }
+
+    .cart-header h2 {
+        font-size: 20px;
+    }
+
+    .close-cart {
+        font-size: 28px;
+    }
+
+    /* Itens do carrinho */
+    .cart-item {
+        gap: 10px;
+    }
+
+    .cart-item img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .cart-item-title {
+        font-size: 13px;
+    }
+
+    .cart-item-price {
+        font-size: 14px;
+    }
+
+    /* Controles de quantidade */
+    .quantity-controls {
+        gap: 8px;
+    }
+
+    .quantity-controls button {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+    }
+
+    /* Botão finalizar */
+    .finalizarPedido {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+/* =========================
+   TELAS MUITO PEQUENAS
+========================= */
+@media (max-width: 480px) {
+
+    nav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .logo {
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .cart-icon {
+        align-self: flex-end;
+    }
+
+    .cart-header h2 {
+        font-size: 18px;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .cart-item img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .quantity-controls {
+        justify-content: center;
+    }
+
+    .finalizarPedido {
+        font-size: 14px;
+    }
+}

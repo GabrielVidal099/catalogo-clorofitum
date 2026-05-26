@@ -11,3 +11,89 @@ body{
 margin: 0;
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* =========================
+   CONFIGURAÇÕES GLOBAIS RESPONSIVAS
+========================= */
+
+/* Evita problemas de largura */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Scroll suave */
+html{
+    scroll-behavior: smooth;
+}
+
+/* Body */
+body{
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    background-color: var(--white);
+    color: var(--text-color);
+
+    overflow-x: hidden;
+}
+
+/* Imagens responsivas */
+img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Botões */
+button{
+    font-family: inherit;
+}
+
+/* Inputs */
+input,
+textarea,
+select{
+    font-family: inherit;
+    font-size: 16px; /* evita zoom automático no mobile */
+}
+
+/* Links */
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+/* =========================
+   ROOT
+========================= */
+
+:root {
+    --primary-color: #008a29;
+    --secondary-color: #0a5200;
+    --text-color: #333;
+    --light-bg: #fefae0;
+    --white: #ffffff;
+    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   AJUSTES MOBILE GERAIS
+========================= */
+
+@media (max-width: 768px){
+
+    body{
+        font-size: 15px;
+    }
+
+}
+
+@media (max-width: 480px){
+
+    body{
+        font-size: 14px;
+    }
+
+}
