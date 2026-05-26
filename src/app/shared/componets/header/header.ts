@@ -21,6 +21,10 @@ export class Header {
  
   showCart = false;
 
+  onSearch(value: string) {
+    this.filtredTitle.emit(value);
+  }
+
   toggleCart():void{
     this.showCart = !this.showCart
   }
