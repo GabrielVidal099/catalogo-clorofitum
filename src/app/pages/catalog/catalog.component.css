@@ -107,6 +107,7 @@
     font-size: 1.1rem;
     color: #555;
     font-weight: bold;
+    height: 20px;
 }
 
 .add-to-cart-btn {
@@ -119,7 +120,6 @@
     border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
-    position: end;
 }
 
 .add-to-cart:hover {
@@ -237,4 +237,141 @@ h1.catclor{
 .modal-details img {
     width: 50%;
     border-radius: 10px;
+}
+
+/* =========================
+   RESPONSIVIDADE MOBILE
+========================= */
+@media (max-width: 768px) {
+
+    /* Carrossel */
+    .carrosel {
+        height: 250px;
+    }
+
+    .prev,
+    .next {
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .prev {
+        left: 10px;
+    }
+
+    .next {
+        right: 10px;
+    }
+
+    /* Grid de produtos */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
+        padding: 0 1rem 2rem;
+    }
+
+    .product-card {
+        border-radius: 12px;
+    }
+
+    .product-image {
+        height: 180px;
+    }
+
+    .product-info {
+        padding: 1rem;
+    }
+
+    .product-title {
+        font-size: 1rem;
+    }
+
+    .product-price {
+        font-size: 1rem;
+    }
+
+    .add-to-cart-btn {
+        padding: 0.7rem;
+        font-size: 14px;
+    }
+
+    /* Botões de filtro */
+    .filters {
+        gap: 8px;
+        margin: 20px 0;
+        padding: 0 10px;
+    }
+
+    .filter-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+
+    /* Título */
+    h1.catclor {
+        font-size: 30px;
+        padding: 0 10px;
+    }
+
+    /* WhatsApp flutuante */
+    .whatsapp-float {
+        width: 55px;
+        height: 55px;
+        font-size: 30px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    /* Modal */
+    .modal-content {
+        width: 95%;
+        padding: 1rem;
+        margin: 10% auto;
+    }
+
+    .modal-details {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .modal-details img {
+        width: 100%;
+    }
+
+    .close-btn {
+        font-size: 1.5rem;
+        top: 0.5rem;
+        right: 1rem;
+    }
+}
+
+/* =========================
+   TELAS MUITO PEQUENAS
+========================= */
+@media (max-width: 480px) {
+
+    .carrosel {
+        height: 200px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-image {
+        height: 220px;
+    }
+
+    h1.catclor {
+        font-size: 24px;
+    }
+
+    .filter-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .add-to-cart-btn {
+        font-size: 13px;
+    }
 }

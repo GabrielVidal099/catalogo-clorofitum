@@ -1,11 +1,12 @@
 <app-header
   [cartCount]="cartCount"
   [cart]="cart"
+  [consultor]="consultor"
+  (filtredTitle)= "filterProducts2($event)"
   (aumentar)="aumentarQuantidade($event)"
   (diminuir)="diminuirQuantidade($event)"
   (remover)="removerItem($event)">
 </app-header>
-
 
 <section class="carrosel">
 
@@ -120,6 +121,7 @@
     </div>
 }
 
-<a href="https://wa.me/5531992171465" class="whatsapp-float" target="_blank">
+<a 
+    [href]="getWhatsappLink()" class="whatsapp-float" target="_blank">
     <i class="fa-brands fa-whatsapp"></i>
 </a>
