@@ -1,5 +1,7 @@
-/*carrosel*/
-.carrosel{
+/* =========================
+   CARROSSEL
+========================= */
+.carrosel {
     padding: 0;
     position: relative;
     width: 100%;
@@ -7,64 +9,54 @@
     overflow: hidden;
 }
 
-.slides{
+.slides {
     width: 100%;
     height: 100%;
     position: relative;
 }
 
-.slide{
+.slide {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
     object-position: center;
-
     position: absolute;
     top: 0;
     left: 0;
-
     opacity: 0;
     transition: opacity 1s ease-in-out;
 }
 
-.slide.active{
+.slide.active {
     opacity: 1;
 }
 
 .prev,
-.next{
+.next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-
     background: rgba(255, 255, 255, 0);
     color: rgb(235, 232, 232);
-
     border: none;
     padding: 15px;
-
     cursor: pointer;
-
     font-size: 22px;
-
     z-index: 10;
 }
 
-.prev{
-    left: 20px;
-}
+.prev { left: 20px; }
+.next { right: 20px; }
 
-.next{
-    right: 20px;
-}
-
-
+/* =========================
+   PRODUTOS
+========================= */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 2rem;
     padding: 0 5% 4rem;
+    align-items: stretch;
 }
 
 .product-card {
@@ -74,6 +66,11 @@
     box-shadow: var(--shadow);
     transition: transform 0.3s;
     cursor: pointer;
+    box-sizing: border-box;
+
+    height: 420px;
+    display: flex;
+    flex-direction: column;
 }
 
 .product-card:hover {
@@ -82,25 +79,44 @@
 
 .product-image {
     width: 100%;
-    height: 250px;
-    object-fit: cover;
+    height: 200px;
+    object-fit: contain;
+}
+
+/* PROMOÇÕES */
+.product-category.promo {
+    color: rgb(0, 170, 37);
+    font-weight: bold;
+}
+
+/* OUTRAS CATEGORIAS */
+.product-category.normal {
+    font-weight: bold;
+    color: #255bc0; /* azul escuro elegante */
 }
 
 .product-info {
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
 }
 
 .product-category {
-    font-size: 0.8rem;
-    color: var(--primary-color);
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product-title {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
-    font-weight: 600;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .product-price {
@@ -111,97 +127,164 @@
 }
 
 .add-to-cart-btn {
+     margin-top: auto;
     width: 100%;
     padding: 0.8rem;
-    margin-top: 1rem;
     background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
 }
 
-.add-to-cart:hover {
+.add-to-cart-btn:hover {
     background-color: #016920;
 }
 
-.whatsapp-float{
+/* =========================
+   WHATSAPP
+========================= */
+.whatsapp-float {
     position: fixed;
     width: 65px;
     height: 65px;
     bottom: 25px;
     right: 25px;
-
     background: #25D366;
     color: white;
-
     border-radius: 50%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 38px;
-
     text-decoration: none;
-
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-
     z-index: 9999;
-
     transition: 0.3s;
 }
 
-.whatsapp-float:hover{
+.whatsapp-float:hover {
     transform: scale(1.1);
     background: #1ebe5d;
 }
 
+/* =========================
+   FILTROS (CORRIGIDO)
+========================= */
 .filters {
     display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #00594c;
+    padding: 32px 30px;
     flex-wrap: wrap;
-    gap: 12px;
     justify-content: center;
-    margin: 30px 0;
 }
 
+/* BOTÕES */
 .filter-btn {
-    padding: 12px 22px;
+    background: transparent;
     border: none;
-    border-radius: 30px;
-    background: #f5f5f5;
-    color: #333;
-    font-size: 15px;
-    font-weight: 500;
+    color: white;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    position: relative;
+    padding: 10px 12px;
+    border-radius: 8px;
+    transition: 0.3s;
 }
 
-/* Hover */
-.filter-btn:hover {
-    background: #027a12;
-    color: #fff;
-    transform: translateY(-2px);
+/* linha animada */
+.filter-btn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background: white;
+    transition: 0.3s;
 }
 
-/* Botão ativo */
-.filter-btn.active {
-    background: linear-gradient(135deg, #c89b3c, #f5d27a);
-    color: #fff;
-    box-shadow: 0 4px 10px rgba(200, 155, 60, 0.3);
+.filter-btn:hover::after,
+.filter-btn.active::after {
+    width: 100%;
 }
 
-h1.catclor{
-  text-align: center;
-  color: #027a12;
-  font-size: 45px;
-  font-style: italic;
+/* =========================
+   DROPDOWN (LINHA)
+========================= */
+.dropdown {
+    position: relative;
+    display: inline-block;
 }
 
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #00473d;
+    border-radius: 8px;
+    min-width: 160px;
+
+    max-height: 300px; /* altura máxima */
+    overflow-y: auto; /* scroll vertical */
+    overflow-x: hidden;
+
+    z-index: 999;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+.dropdown-menu::-webkit-scrollbar {
+    width: 5px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: #0a8a75;
+    border-radius: 10px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: #00473d;
+}
+
+.dropdown-menu button {
+    width: 100%;
+    padding: 10px 14px;
+    background: none;
+    border: none;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.dropdown-menu button:hover {
+    background: #006b5c;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* =========================
+   TÍTULO
+========================= */
+h1.catclor {
+    padding: 10px;
+    text-align: center;
+    color: #027a12;
+    font-size: 45px;
+    font-style: italic;
+}
+
+/* =========================
+   MODAL
+========================= */
 .modal {
-   display: flex; 
+    display: flex;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -244,76 +327,29 @@ h1.catclor{
 ========================= */
 @media (max-width: 768px) {
 
-    /* Carrossel */
     .carrosel {
         height: 250px;
     }
 
-    .prev,
-    .next {
-        font-size: 18px;
-        padding: 10px;
-    }
-
-    .prev {
-        left: 10px;
-    }
-
-    .next {
-        right: 10px;
-    }
-
-    /* Grid de produtos */
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 1rem;
         padding: 0 1rem 2rem;
     }
 
-    .product-card {
-        border-radius: 12px;
-    }
-
     .product-image {
         height: 180px;
     }
 
-    .product-info {
-        padding: 1rem;
-    }
-
-    .product-title {
-        font-size: 1rem;
-    }
-
-    .product-price {
-        font-size: 1rem;
-    }
-
-    .add-to-cart-btn {
-        padding: 0.7rem;
-        font-size: 14px;
-    }
-
-    /* Botões de filtro */
     .filters {
-        gap: 8px;
-        margin: 20px 0;
-        padding: 0 10px;
+        gap: 10px;
+        padding: 10px;
     }
 
-    .filter-btn {
-        padding: 10px 16px;
-        font-size: 13px;
-    }
-
-    /* Título */
     h1.catclor {
         font-size: 30px;
-        padding: 0 10px;
     }
 
-    /* WhatsApp flutuante */
     .whatsapp-float {
         width: 55px;
         height: 55px;
@@ -322,7 +358,6 @@ h1.catclor{
         right: 20px;
     }
 
-    /* Modal */
     .modal-content {
         width: 95%;
         padding: 1rem;
@@ -331,35 +366,17 @@ h1.catclor{
 
     .modal-details {
         flex-direction: column;
-        gap: 1rem;
     }
 
     .modal-details img {
         width: 100%;
     }
-
-    .close-btn {
-        font-size: 1.5rem;
-        top: 0.5rem;
-        right: 1rem;
-    }
 }
 
-/* =========================
-   TELAS MUITO PEQUENAS
-========================= */
 @media (max-width: 480px) {
-
-    .carrosel {
-        height: 200px;
-    }
 
     .product-grid {
         grid-template-columns: 1fr;
-    }
-
-    .product-image {
-        height: 220px;
     }
 
     h1.catclor {
@@ -369,9 +386,5 @@ h1.catclor{
     .filter-btn {
         width: 100%;
         text-align: center;
-    }
-
-    .add-to-cart-btn {
-        font-size: 13px;
     }
 }
