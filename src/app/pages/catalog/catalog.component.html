@@ -37,26 +37,66 @@
     <button class="next" (click)="nextSlide()">
         &#10095;
     </button>
-
 </section>
 
+<section class="filters">
 
-    <section class="filters">
-    <button class="filter-btn active" {class,active}="selectedCategory === 'Promoções'"(click)="filterProducts('Promoções')">
+    <button class="filter-btn"
+        [class.active]="selectedCategory === 'Promoções'"
+        (click)="filterProducts('Promoções')"> 
         Promoções
     </button>
+    <!-- DROPDOWN LINHA -->
+    <div class="dropdown">
 
-    <button class="filter-btn"  {class,active}="selectedCategory === 'Ouro'"(click)="filterProducts('Ouro')">
-        Ouro
-    </button>
+        <button class="filter-btn">
+            Por Linha ▾
+        </button>
 
-    <button class="filter-btn" {class,active}="selectedCategory === 'Coffee'"(click)="filterProducts('Coffee')">
-        Coffee
-    </button>
+        <div class="dropdown-menu">
+            <button (click)="filterByLine('black Coffe')">Black Coffe</button>
+            <button (click)="filterByLine('brazilian coffe')">Brazilian Coffe</button>
+            <button (click)="filterByLine('cauterizador')">Cauterizador</button>
+            <button (click)="filterByLine('cicatri')">Cicatri</button>
+            <button (click)="filterByLine('colecao minas preciosas')">Coleção Minas Preciosas</button>
+            <button (click)="filterByLine('colecao namorada de minas')">Coleção Namorada de Minas</button>
+            <button (click)="filterByLine('coringa')">Coringa</button>
+            <button (click)="filterByLine('glico power')">Glico Power</button>
+            <button (click)="filterByLine('cti')">Cti</button>
 
-    <button class="filter-btn" {class,active}="selectedCategory === 'Por Linha'"(click)="filterProducts('Por Linha')">
-        Por Linha
-    </button>
+            <button (click)="filterByLine('')">Todas</button>
+        </div>
+
+    </div>
+
+    <div class="dropdown">
+
+        <button class="filter-btn">
+            Tipo de Produto ▾
+        </button>
+
+        <div class="dropdown-menu">
+            <button (click)="filterByLine('black Coffe')">Alisamento Progressivo</button>
+            <button (click)="filterByLine('brazilian coffe')">Ampolas de Tratamento</button>
+            <button (click)="filterByLine('cauterizador')">Barba, cabelo e bigode</button>
+            <button (click)="filterByLine('cicatri')">Coloração</button>
+            <button (click)="filterByLine('colecao minas preciosas')">Hidratantes Corporais</button>
+            <button (click)="filterByLine('colecao namorada de minas')">Finaliador</button>
+            <button (click)="filterByLine('coringa')">Máscara de Tratamento</button>
+            <button (click)="filterByLine('glico power')">Oxidante e Descolorante</button>
+            <button (click)="filterByLine('cti')">Perfumes</button>
+            <button (click)="filterByLine('cti')">Shampoo</button>
+            <button (click)="filterByLine('cti')">Cronograma capilar</button>
+            <button (click)="filterByLine('cti')">Antiqueda</button>
+            <button (click)="filterByLine('cti')">Antibrancos</button>
+            <button (click)="filterByLine('cti')">Perfumes Capilares</button>
+
+            <button (click)="filterByLine('')">Todas</button>
+        </div>
+
+    </div>
+
+
 </section>
 
 
@@ -72,7 +112,10 @@
                 class="product-image">
 
             <div class="product-info">
-                <p class="product-category">{{ product.category }}</p>
+                <p class="product-category"
+                    [ngClass]="getCategoryClass(product.category)">
+                    {{ product.category }}
+                </p>
                 <h3 class="product-title">{{product.title}}</h3>
                 <p class="product-price">{{product.price}}</p>
                 <p class="product-price desconto">{{product.price_descont || ""}}</p>

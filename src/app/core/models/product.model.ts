@@ -6,4 +6,5 @@ export interface Product {
   price_descont:string;
   image: string;
   description: string;
+  line:string;
 }

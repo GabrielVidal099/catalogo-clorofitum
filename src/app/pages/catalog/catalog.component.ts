@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
@@ -18,7 +18,7 @@ import { CLIENTS } from '../../core/data/client.mocks';
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [NgClass, Header],
+  imports: [NgClass, Header,FormsModule],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.css',
 })
@@ -60,6 +60,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   selectedProduct: Product | null = null;
   contatos: clients[] = CLIENTS;
   showModal = false;
+  selectedLine: string = '';
 
   current = 0;
   totalSlides = 3;
@@ -151,18 +152,33 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
     // =========================
-  // FILTER
+  // Busca
   // =========================
   filterProducts2(title: string): void {
 
     this.selectedTitle = title;
 
     const search = title.toLowerCase().trim();
-
-    this.filteredProducts = this.products.filter(
+    if(search.length < 3){
+      this.filteredProducts = this.products;
+      return;
+    }
+      this.filteredProducts = this.products.filter(
       p => p.title.toLowerCase().includes(search)
     );
+
   }
+  filterByLine(line: string): void {
+  this.selectedLine = line;
+  if (!line) {
+    this.filteredProducts = this.products;
+    return;
+  }
+
+  this.filteredProducts = this.products.filter(
+    p => p.line === line
+  );
+}
 
   // =========================
   // MODAL
@@ -184,7 +200,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   addToCart(product: any): void {
     let precoTexto = ''
-    if(product.price_descont === " "){
+    if(product.price_descont === "" || product.price_descont === " "){
        precoTexto = product.price;
     }
     else{
@@ -274,5 +290,15 @@ export class CatalogComponent implements OnInit, OnDestroy {
   return `https://wa.me/${this.consultor.telefone}?text=${mensagem}`;
 }
 
+  getCategoryClass(category: string): string {
+    if (!category) return 'normal';
+
+
+    if (category === 'Promoções') {
+      return 'promo';
+    }
+
+    return 'normal';
+  }
 
 }
