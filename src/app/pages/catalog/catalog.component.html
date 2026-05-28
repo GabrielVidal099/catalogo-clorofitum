@@ -2,169 +2,194 @@
   [cartCount]="cartCount"
   [cart]="cart"
   [consultor]="consultor"
-  (filtredTitle)= "filterProducts2($event)"
+  (filtredTitle)="filterProducts2($event)"
   (aumentar)="aumentarQuantidade($event)"
   (diminuir)="diminuirQuantidade($event)"
-  (remover)="removerItem($event)">
+  (remover)="removerItem($event)"
+>
 </app-header>
 
 <section class="carrosel">
+  <div class="slides">
+    <img
+      src="https://static.clorofitum.com.br/banner/1778850865487-05861844061926189.webp"
+      class="slide"
+      [ngClass]="{ active: current === 0 }"
+    />
 
-    <div class="slides">
+    <img
+      src="https://static.clorofitum.com.br/banner/1778851060085-021876536533170432.webp"
+      class="slide"
+      [ngClass]="{ active: current === 1 }"
+    />
 
-        <img
-            src="https://static.clorofitum.com.br/banner/1778850865487-05861844061926189.webp"
-            class="slide"
-            [ngClass]="{'active': current === 0}">
+    <img
+      src="https://static.clorofitum.com.br/banner/1778850994132-034089482570123786.webp"
+      class="slide"
+      [ngClass]="{ active: current === 2 }"
+    />
+  </div>
 
-        <img
-            src="https://static.clorofitum.com.br/banner/1778851060085-021876536533170432.webp"
-            class="slide"
-            [ngClass]="{'active': current === 1}">
-            
+  <button class="prev" (click)="prevSlide()">&#10094;</button>
 
-        <img
-            src="https://static.clorofitum.com.br/banner/1778850994132-034089482570123786.webp"
-            class="slide"
-            [ngClass]="{'active': current === 2}">
-
-    </div>
-
-    <button class="prev" (click)="prevSlide()">
-        &#10094;
-    </button>
-
-    <button class="next" (click)="nextSlide()">
-        &#10095;
-    </button>
+  <button class="next" (click)="nextSlide()">&#10095;</button>
 </section>
 
 <section class="filters">
+  <button
+    class="filter-btn"
+    [class.active]="selectedCategory === 'Promoções'"
+    (click)="filterProducts('Promoções')"
+  >
+    Promoções
+  </button>
+  <!-- DROPDOWN LINHA -->
+  <div class="dropdown">
+    <button class="filter-btn">Por Linha ▾</button>
 
-    <button class="filter-btn"
-        [class.active]="selectedCategory === 'Promoções'"
-        (click)="filterProducts('Promoções')"> 
-        Promoções
-    </button>
-    <!-- DROPDOWN LINHA -->
-    <div class="dropdown">
+    <div class="dropdown-menu">
+      <button (click)="filterByLine('black Coffe')">Black Coffe</button>
+      <button (click)="filterByLine('brazilian coffe')">Brazilian Coffe</button>
+      <button (click)="filterByLine('cauterizador')">Cauterizador</button>
+      <button (click)="filterByLine('cicatri')">Cicatri</button>
+      <button (click)="filterByLine('colecao minas preciosas')">Coleção Minas Preciosas</button>
+      <button (click)="filterByLine('colecao namorada de minas')">Coleção Namorada de Minas</button>
+      <button (click)="filterByLine('coringa')">Coringa</button>
+      <button (click)="filterByLine('glico power')">Glico Power</button>
+      <button (click)="filterByLine('cti')">Cti</button>
 
-        <button class="filter-btn">
-            Por Linha ▾
-        </button>
-
-        <div class="dropdown-menu">
-            <button (click)="filterByLine('black Coffe')">Black Coffe</button>
-            <button (click)="filterByLine('brazilian coffe')">Brazilian Coffe</button>
-            <button (click)="filterByLine('cauterizador')">Cauterizador</button>
-            <button (click)="filterByLine('cicatri')">Cicatri</button>
-            <button (click)="filterByLine('colecao minas preciosas')">Coleção Minas Preciosas</button>
-            <button (click)="filterByLine('colecao namorada de minas')">Coleção Namorada de Minas</button>
-            <button (click)="filterByLine('coringa')">Coringa</button>
-            <button (click)="filterByLine('glico power')">Glico Power</button>
-            <button (click)="filterByLine('cti')">Cti</button>
-
-            <button (click)="filterByLine('')">Todas</button>
-        </div>
-
+      <button (click)="filterByLine('')">Todas</button>
     </div>
+  </div>
 
-    <div class="dropdown">
+  <div class="dropdown">
+    <button class="filter-btn">Tipo de Produto ▾</button>
 
-        <button class="filter-btn">
-            Tipo de Produto ▾
-        </button>
+    <div class="dropdown-menu">
+      <button (click)="filterByLine('black Coffe')">Alisamento Progressivo</button>
+      <button (click)="filterByLine('brazilian coffe')">Ampolas de Tratamento</button>
+      <button (click)="filterByLine('cauterizador')">Barba, cabelo e bigode</button>
+      <button (click)="filterByLine('cicatri')">Coloração</button>
+      <button (click)="filterByLine('colecao minas preciosas')">Hidratantes Corporais</button>
+      <button (click)="filterByLine('colecao namorada de minas')">Finaliador</button>
+      <button (click)="filterByLine('coringa')">Máscara de Tratamento</button>
+      <button (click)="filterByLine('glico power')">Oxidante e Descolorante</button>
+      <button (click)="filterByLine('cti')">Perfumes</button>
+      <button (click)="filterByLine('cti')">Shampoo</button>
+      <button (click)="filterByLine('cti')">Cronograma capilar</button>
+      <button (click)="filterByLine('cti')">Antiqueda</button>
+      <button (click)="filterByLine('cti')">Antibrancos</button>
+      <button (click)="filterByLine('cti')">Perfumes Capilares</button>
 
-        <div class="dropdown-menu">
-            <button (click)="filterByLine('black Coffe')">Alisamento Progressivo</button>
-            <button (click)="filterByLine('brazilian coffe')">Ampolas de Tratamento</button>
-            <button (click)="filterByLine('cauterizador')">Barba, cabelo e bigode</button>
-            <button (click)="filterByLine('cicatri')">Coloração</button>
-            <button (click)="filterByLine('colecao minas preciosas')">Hidratantes Corporais</button>
-            <button (click)="filterByLine('colecao namorada de minas')">Finaliador</button>
-            <button (click)="filterByLine('coringa')">Máscara de Tratamento</button>
-            <button (click)="filterByLine('glico power')">Oxidante e Descolorante</button>
-            <button (click)="filterByLine('cti')">Perfumes</button>
-            <button (click)="filterByLine('cti')">Shampoo</button>
-            <button (click)="filterByLine('cti')">Cronograma capilar</button>
-            <button (click)="filterByLine('cti')">Antiqueda</button>
-            <button (click)="filterByLine('cti')">Antibrancos</button>
-            <button (click)="filterByLine('cti')">Perfumes Capilares</button>
-
-            <button (click)="filterByLine('')">Todas</button>
-        </div>
-
+      <button (click)="filterByLine('')">Todas</button>
     </div>
-
-
+  </div>
 </section>
 
-
 <section class="catalog-page">
-  <h1 class="catclor">Catálogo Clorofitum</h1>
-
+  <h1 class="catalog-title">Catálogo Clorofitum</h1>
 
   <div class="product-grid">
     @for (product of filteredProducts; track product.id) {
-        <div class="product-card" (click)="openProductModal(product)">
-            <img src="{{product.image}}" 
-                alt="{{product.title}}" 
-                class="product-image">
-
-            <div class="product-info">
-                <p class="product-category"
-                    [ngClass]="getCategoryClass(product.category)">
-                    {{ product.category }}
-                </p>
-                <h3 class="product-title">{{product.title}}</h3>
-                <p class="product-price">{{product.price}}</p>
-                <p class="product-price desconto">{{product.price_descont || ""}}</p>
-                <button class="add-to-cart-btn" (click)="addToCart(product);$event.stopPropagation()">Adicionar ao Carrinho</button>
-            </div>
+      <div class="product-card" (click)="openProductModal(product)">
+        <div class="product-image-wrapper">
+          <img [src]="product.image" [alt]="product.title" class="product-image" />
         </div>
-
+      </div>
     }
   </div>
 </section>
 
-@if(showModal){
+@if (showModal && selectedProduct) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeModal()">×</button>
 
-    <div class="modal-overlay" (click)="closeModal()">
+      <!-- Cabeçalho -->
+      <div class="modal-header">
+        <span class="line-badge">{{ selectedProduct.line }}</span>
+        <h2 class="modal-title">{{ selectedProduct.title }}</h2>
+        <p class="modal-subtitle">{{ selectedProduct.description }}</p>
+      </div>
 
-        <div class="modal"(click)="$event.stopPropagation()">
-
-            <button
-            class="close-btn"
-            (click)="closeModal()">
-            ×
-            </button>
-            <div class="modal-content">
-                <div class="modal-details">
-                    <img src="{{selectedProduct?.image}}" 
-                            alt="product.title">
-                    <div>
-                        <h2>{{selectedProduct?.title}}</h2>
-
-                        <p class="product-category">
-                            {{selectedProduct?.category}}
-                        </p>
-
-                        <p style="margin:1rem 0;">
-                            {{selectedProduct?.description}}
-                        </p>
-                        
-                        <p class="product-price"
-                        style="font-size:1.5rem;">
-                            {{selectedProduct?.price}}
-                        </p>
-                    </div>
-                </div>
-            </div>
+      <!-- Ativos da linha -->
+      @if (selectedProduct.information?.length) {
+        <div class="modal-ativos">
+          <h3 class="ativos-title">Principais ativos da linha</h3>
+          <div class="ativos-list">
+            @for (ativo of selectedProduct.information; track $index) {
+              <div class="ativo-item">
+                <span class="ativo-name">{{ ativo.name }}</span>
+                <span class="ativo-desc">{{ ativo.description }}</span>
+              </div>
+            }
+          </div>
         </div>
+      }
+
+      <!-- Divisor -->
+      <div class="modal-divider"></div>
+
+      <!-- Produtos da linha -->
+      <div class="modal-details">
+        <div class="modal-image-wrap">
+          <img
+            [src]="selectedProduct.imageCard"
+            [alt]="selectedProduct.title"
+            class="modal-image"
+          />
+        </div>
+
+        <div class="modal-info">
+          <p class="product-category">{{ selectedProduct.category }}</p>
+
+          <div class="price-block">
+            @if (selectedProduct.price_descont) {
+              <span class="price-from">De {{ selectedProduct.price }}</span>
+              <span class="price-main">{{ selectedProduct.price_descont }}</span>
+            } @else {
+              <span class="price-main">{{ selectedProduct.price }}</span>
+            }
+          </div>
+
+          <button class="add-to-cart-btn" (click)="addToCart(selectedProduct)">
+            🛒 Adicionar ao carrinho
+          </button>
+          <button class="btn-whatsapp" (click)="openWhatsapp()">
+            Pedir pelo WhatsApp
+          </button>
+        </div>
+      </div>
+
+      <!-- Modo de uso -->
+      @if (selectedProduct.usage?.length) {
+        <div class="modal-section">
+          <h3 class="section-title">Modo de uso</h3>
+          <ol class="usage-list">
+            @for (step of selectedProduct.usage; track $index) {
+              <li>{{ step }}</li>
+            }
+          </ol>
+        </div>
+      }
+
+      <!-- Mais da linha -->
+      @if (lineProducts.length) {
+        <div class="modal-section">
+          <h3 class="section-title">Mais da linha {{ selectedProduct.line }}</h3>
+          <div class="line-grid">
+            @for (p of lineProducts; track p.id) {
+              <div class="line-card" (click)="switchProduct(p)">
+                <img [src]="p.imageCard" [alt]="p.title" />
+                <p>{{ p.title }}</p>
+                <span>{{ p.price_descont || p.price }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
     </div>
+  </div>
 }
 
-<a 
-    [href]="getWhatsappLink()" class="whatsapp-float" target="_blank">
-    <i class="fa-brands fa-whatsapp"></i>
-</a>
