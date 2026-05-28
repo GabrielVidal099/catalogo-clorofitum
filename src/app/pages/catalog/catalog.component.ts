@@ -30,6 +30,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   cart: any[] = [];
+  lineProducts: Product[] = [];
 
   // CART COUNT
   get cartCount(): number {
@@ -185,15 +186,24 @@ export class CatalogComponent implements OnInit, OnDestroy {
   // =========================
 
   openProductModal(product: Product): void {
-    this.selectedProduct = product;
-    this.showModal = true;
-  }
+  this.selectedProduct = product;
+  this.lineProducts = this.products.filter(
+    p => p.line === product.line && p.id !== product.id
+  );
+  this.showModal = true;
+}
+switchProduct(product: Product): void {
+  this.selectedProduct = product;
+  this.lineProducts = this.products.filter(
+    p => p.line === product.line && p.id !== product.id
+  );
+}
 
-  closeModal(): void {
-    this.showModal = false;
-    this.selectedProduct = null;
-  }
-
+closeModal(): void {
+  this.showModal = false;
+  this.selectedProduct = null;
+  this.lineProducts = [];
+}
   // =========================
   // CART
   // =========================
@@ -206,7 +216,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     else{
        precoTexto = product.price_descont;
     }
-       const precoNumerico = Number(
+       const precoNumerico = Number( 
         precoTexto
         .replace(/[^0-9,]/g, '')
         .replace(',', '.')
@@ -277,7 +287,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
   updateCart(): void {
     
   }
-
+openWhatsapp(): void {
+  window.open(this.getWhatsappLink(), '_blank');
+}
   getWhatsappLink(): string {
   if (!this.consultor) {
     return 'https://wa.me/553183453133';
