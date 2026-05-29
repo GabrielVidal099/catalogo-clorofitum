@@ -16,4 +16,5 @@ export interface Product {
   usage?: string[];
   lineProducts?: [];
   information?: ProductInformation[];
+  cor?: string;
 }

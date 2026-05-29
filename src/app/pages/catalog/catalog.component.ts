@@ -14,6 +14,8 @@ import { Header } from "../../shared/componets/header/header";
 import { ActivatedRoute } from '@angular/router';
 import { clients } from '../../core/models/client.models';
 import { CLIENTS } from '../../core/data/client.mocks';
+import { kits } from '../../core/models/kits.models';
+import { kitsService } from '../../core/services/kits.service';
 
 @Component({
   selector: 'app-catalog',
@@ -31,6 +33,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
   filteredProducts: Product[] = [];
   cart: any[] = [];
   lineProducts: Product[] = [];
+  kits: kits[] = [];
+  filteredKits: kits [] = [];
+  selectedKits: kits | null = null;
+  lineKits: kits[] = [];
 
   // CART COUNT
   get cartCount(): number {
@@ -71,6 +77,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
+    private kitsService: kitsService,
     private cdr: ChangeDetectorRef,
     private route:ActivatedRoute
   ) {}
@@ -79,6 +86,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   this.products = this.productService.getProducts();
   this.filteredProducts = this.products;
+
+  this.kits = this.kitsService.getkits();
+  this.filteredKits = this.kits;
 
   const slug = this.route.snapshot.paramMap.get('name');
 
@@ -192,6 +202,15 @@ export class CatalogComponent implements OnInit, OnDestroy {
   );
   this.showModal = true;
 }
+openKitsModal(kits: kits): void {
+this.selectedKits = kits;
+this.lineKits = this.kits.filter(
+p => p.line === kits.line && p.id !== kits.id
+);
+this.showModal = true
+
+}
+
 switchProduct(product: Product): void {
   this.selectedProduct = product;
   this.lineProducts = this.products.filter(
