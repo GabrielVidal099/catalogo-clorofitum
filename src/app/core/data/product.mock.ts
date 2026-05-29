@@ -3,14 +3,15 @@ import { Product } from '../models/product.model';
 export const PRODUCTS: Product[] = [
   {
     id: 1,
-    title: "Black Coffee Barber Shampoo 300ml",
-    category: "Black Coffee",
-    line: 'black Coffe',
+    title: "Transforme os rituais de autocuidado em momentos especiais de bem estar e carinho",
+    description: "Eu me Quero! Eu me amo!",
+    cor: '#6b3fa0',
+    category: "Mãos e pés",
+    line: 'Minha Cura',
     price: "R$ 69,90",
-    price_descont: "",
+    price_descont: "R$ 35,90",
     imageCard: "https://static.clorofitum.com.br/produto/20250616120914_5669994331_D.webp",
     image: "https://catalogo-clorofitum.clorofitum.com.br/wp-content/uploads/2025/08/EU-ME-QUERO-HOT-ROXO.png",
-    description: "Shampoo multifuncional para higienizar barba, cabelo e bigode com praticidade na rotina diária.",
     usage: [
       "Com a pele limpa e seca, aplique o produto na região desejada.",
       "Espalhe com movimentos suaves até completa absorção.",
@@ -25,8 +26,9 @@ export const PRODUCTS: Product[] = [
   {
     id: 2,
     title: "Black Coffee Barber Leave-in Condicionador 230g",
-    category: "Black Coffee",
-    line: 'black Coffe',
+    cor: '#3b6d11',
+    category: "Mãos e pés",
+    line: 'Minha Cura',
     price: "R$ 49,90",
     price_descont: "",
     imageCard: '',

@@ -108,7 +108,7 @@
       <!-- Cabeçalho -->
       <div class="modal-header">
         <span class="line-badge">{{ selectedProduct.line }}</span>
-        <h2 class="modal-title">{{ selectedProduct.title }}</h2>
+        <h2 class="modal-title" [style.--cor]="selectedProduct.cor">{{ selectedProduct.title }}</h2>
         <p class="modal-subtitle">{{ selectedProduct.description }}</p>
       </div>
 
@@ -193,3 +193,33 @@
   </div>
 }
 
+
+<section class="catalog-page">
+  <h1 class="Kits">kits Das Linhas</h1>
+
+  <div class="product-grid">
+    @for (kits of filteredKits; track kits.id) {
+      <div class="product-card" (click)="openKitsModal(kits)">
+        <div class="product-image-wrapper">
+          <img [src]="kits.image" [alt]="kits.title" class="kits-image" />
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (showModal && selectedKits) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeModal()">×</button>
+
+      <!-- Cabeçalho -->
+      <div class="modal-header">
+        <span class="line-badge">{{ selectedKits.line }}</span>
+        <h2 class="modal-title" [style.--cor]="selectedKits.cor">{{ selectedKits.title }}</h2>
+        <p class="modal-subtitle">{{ selectedKits.description }}</p>
+      </div>
+    </div>
+  </div>
+    }
+
+</section>
