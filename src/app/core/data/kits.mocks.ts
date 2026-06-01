@@ -2,7 +2,7 @@ import { kits } from '../models/kits.models';
 
 export const KITS: kits[] = [
  {
-    id: 1,
+    idKit: 1,
     title: "CTI Pré e Pós Química Shampoo 300ml",
     cor:'', 
     category: "Promoções",
@@ -14,7 +14,7 @@ export const KITS: kits[] = [
   },
 
    {
-    id: 2,
+    idKit: 2,
     title: "CTI Pré e Pós Química Shampoo 300ml",
     cor:'', 
     category: "Promoções",
@@ -26,7 +26,7 @@ export const KITS: kits[] = [
   },
 
    {
-    id: 3,
+    idKit: 3,
     title: "CTI Pré e Pós Química Shampoo 300ml",
     cor:'', 
     category: "Promoções",
@@ -38,7 +38,7 @@ export const KITS: kits[] = [
   },
 
    {
-    id: 4,
+    idKit: 4,
     title: "CTI Pré e Pós Química Shampoo 300ml",
     cor:'', 
     category: "Promoções",
@@ -50,7 +50,7 @@ export const KITS: kits[] = [
   },
 
    {
-    id: 5,
+    idKit: 5,
     title: "CTI Pré e Pós Química Shampoo 300ml",
     cor:'', 
     category: "Promoções",
@@ -62,7 +62,7 @@ export const KITS: kits[] = [
   },
 
    {
-    id: 6,
+    idKit: 6,
     title: "CTI Pré e Pós Química Shampoo 300ml",
     cor:'', 
     category: "Promoções",
@@ -74,7 +74,7 @@ export const KITS: kits[] = [
   },
 
    {
-    id: 7,
+    idKit: 7,
     title: "CTI Pré e Pós Química Shampoo 300ml",
     cor:'', 
     category: "Promoções",

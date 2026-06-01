@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Output, Input, EventEmitter, ViewChild, ElementRef, input } from '@angular/core';
 import { clients } from '../../../core/models/client.models';
 
 @Component({
@@ -9,6 +9,7 @@ import { clients } from '../../../core/models/client.models';
   styleUrl: './header.css',
 })
 export class Header {
+  @Input() kits:any[] = [];
   @Input() products: any[] = [];
   @Input() cartCount: number = 0;
   @Input() cart:any[] = [];

@@ -67,6 +67,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   selectedProduct: Product | null = null;
   contatos: clients[] = CLIENTS;
   showModal = false;
+  showKitsModal= false;
   selectedLine: string = '';
 
   current = 0;
@@ -205,10 +206,15 @@ export class CatalogComponent implements OnInit, OnDestroy {
 openKitsModal(kits: kits): void {
 this.selectedKits = kits;
 this.lineKits = this.kits.filter(
-p => p.line === kits.line && p.id !== kits.id
+p => p.line === kits.line && p.idKit !== kits.idKit
 );
-this.showModal = true
+this.showKitsModal = true
 
+}
+closeKitsModal(): void {
+  this.showKitsModal = false;
+  this.selectedKits = null;
+  this.lineKits = [];
 }
 
 switchProduct(product: Product): void {

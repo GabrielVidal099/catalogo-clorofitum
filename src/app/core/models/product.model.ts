@@ -5,6 +5,7 @@ export interface ProductInformation {
 
 export interface Product {
   id: number;
+  nameproduct: string;
   title: string;
   category: string;
   price: string;

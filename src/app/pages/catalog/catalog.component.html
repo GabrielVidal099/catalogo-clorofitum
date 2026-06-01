@@ -107,7 +107,7 @@
 
       <!-- Cabeçalho -->
       <div class="modal-header">
-        <span class="line-badge">{{ selectedProduct.line }}</span>
+        <span class="line-badge">{{ selectedProduct.category }}</span>
         <h2 class="modal-title" [style.--cor]="selectedProduct.cor">{{ selectedProduct.title }}</h2>
         <p class="modal-subtitle">{{ selectedProduct.description }}</p>
       </div>
@@ -141,7 +141,7 @@
         </div>
 
         <div class="modal-info">
-          <p class="product-category">{{ selectedProduct.category }}</p>
+          <p class="product-category">{{ selectedProduct.nameproduct }}</p>
 
           <div class="price-block">
             @if (selectedProduct.price_descont) {
@@ -195,10 +195,10 @@
 
 
 <section class="catalog-page">
-  <h1 class="Kits">kits Das Linhas</h1>
+  <h1 class="Kits">Promoções/Kits</h1>
 
   <div class="product-grid">
-    @for (kits of filteredKits; track kits.id) {
+    @for (kits of filteredKits; track kits.idKit) {
       <div class="product-card" (click)="openKitsModal(kits)">
         <div class="product-image-wrapper">
           <img [src]="kits.image" [alt]="kits.title" class="kits-image" />
@@ -206,20 +206,62 @@
       </div>
     }
   </div>
+</section>
 
-  @if (showModal && selectedKits) {
-  <div class="modal-overlay" (click)="closeModal()">
+@if (showKitsModal && selectedKits) {
+  <div class="modal-overlay" (click)="closeKitsModal()">
     <div class="modal" (click)="$event.stopPropagation()">
-      <button class="close-btn" (click)="closeModal()">×</button>
+
+      <button class="close-btn" (click)="closeKitsModal()">×</button>
 
       <!-- Cabeçalho -->
       <div class="modal-header">
         <span class="line-badge">{{ selectedKits.line }}</span>
-        <h2 class="modal-title" [style.--cor]="selectedKits.cor">{{ selectedKits.title }}</h2>
-        <p class="modal-subtitle">{{ selectedKits.description }}</p>
+
+        <h2 class="modal-title" [style.--cor]="selectedKits.cor">
+          {{ selectedKits.title }}
+        </h2>
+
+        <p class="modal-subtitle">
+          {{ selectedKits.description }}
+        </p>
       </div>
+
+      <!-- IMAGEM DO KIT -->
+      <div class="modal-details">
+        <div class="modal-image-wrap">
+          <img
+            [src]="selectedKits.image"
+            [alt]="selectedKits.title"
+            class="modal-image"
+          />
+        </div>
+
+        <div class="modal-info">
+
+          <div class="price-block">
+            @if (selectedKits.price_descont) {
+              <span class="price-from">
+                De {{ selectedKits.price }}
+              </span>
+
+              <span class="price-main">
+                {{ selectedKits.price_descont }}
+              </span>
+            } @else {
+              <span class="price-main">
+                {{ selectedKits.price }}
+              </span>
+            }
+          </div>
+
+          <button class="add-to-cart-btn" (click)="addToCart(selectedKits)">
+            🛒 Adicionar ao carrinho
+          </button>
+
+        </div>
+      </div>
+
     </div>
   </div>
-    }
-
-</section>
+}
