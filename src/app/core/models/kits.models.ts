@@ -1,5 +1,5 @@
 export interface kits {
-  id: number;
+  idKit: number;
   title: string;
   category: string;
   price: string;
