@@ -2,7 +2,6 @@
   [cartCount]="cartCount"
   [cart]="cart"
   [consultor]="consultor"
-  (filtredTitle)="filterProducts2($event)"
   (aumentar)="aumentarQuantidade($event)"
   (diminuir)="diminuirQuantidade($event)"
   (remover)="removerItem($event)"
@@ -12,7 +11,7 @@
 <section class="carrosel">
   <div class="slides">
     <img
-      src="https://static.clorofitum.com.br/banner/1778850865487-05861844061926189.webp"
+      src="https://static.clorofitum.com.br/banner/1780405873718-013960954637864997.png"
       class="slide"
       [ngClass]="{ active: current === 0 }"
     />
@@ -24,7 +23,7 @@
     />
 
     <img
-      src="https://static.clorofitum.com.br/banner/1778850994132-034089482570123786.webp"
+      src="https://static.clorofitum.com.br/banner/1780405921050-028166713503776863.png"
       class="slide"
       [ngClass]="{ active: current === 2 }"
     />
@@ -35,91 +34,129 @@
   <button class="next" (click)="nextSlide()">&#10095;</button>
 </section>
 
-<section class="filters">
-  <button
-    class="filter-btn"
-    [class.active]="selectedCategory === 'Promoções'"
-    (click)="filterProducts('Promoções')"
-  >
-    Promoções
-  </button>
-  <!-- DROPDOWN LINHA -->
-  <div class="dropdown">
-    <button class="filter-btn">Por Linha ▾</button>
-
-    <div class="dropdown-menu">
-      <button (click)="filterByLine('black Coffe')">Black Coffe</button>
-      <button (click)="filterByLine('brazilian coffe')">Brazilian Coffe</button>
-      <button (click)="filterByLine('cauterizador')">Cauterizador</button>
-      <button (click)="filterByLine('cicatri')">Cicatri</button>
-      <button (click)="filterByLine('colecao minas preciosas')">Coleção Minas Preciosas</button>
-      <button (click)="filterByLine('colecao namorada de minas')">Coleção Namorada de Minas</button>
-      <button (click)="filterByLine('coringa')">Coringa</button>
-      <button (click)="filterByLine('glico power')">Glico Power</button>
-      <button (click)="filterByLine('cti')">Cti</button>
-
-      <button (click)="filterByLine('')">Todas</button>
-    </div>
-  </div>
-
-  <div class="dropdown">
-    <button class="filter-btn">Tipo de Produto ▾</button>
-
-    <div class="dropdown-menu">
-      <button (click)="filterByLine('black Coffe')">Alisamento Progressivo</button>
-      <button (click)="filterByLine('brazilian coffe')">Ampolas de Tratamento</button>
-      <button (click)="filterByLine('cauterizador')">Barba, cabelo e bigode</button>
-      <button (click)="filterByLine('cicatri')">Coloração</button>
-      <button (click)="filterByLine('colecao minas preciosas')">Hidratantes Corporais</button>
-      <button (click)="filterByLine('colecao namorada de minas')">Finaliador</button>
-      <button (click)="filterByLine('coringa')">Máscara de Tratamento</button>
-      <button (click)="filterByLine('glico power')">Oxidante e Descolorante</button>
-      <button (click)="filterByLine('cti')">Perfumes</button>
-      <button (click)="filterByLine('cti')">Shampoo</button>
-      <button (click)="filterByLine('cti')">Cronograma capilar</button>
-      <button (click)="filterByLine('cti')">Antiqueda</button>
-      <button (click)="filterByLine('cti')">Antibrancos</button>
-      <button (click)="filterByLine('cti')">Perfumes Capilares</button>
-
-      <button (click)="filterByLine('')">Todas</button>
-    </div>
-  </div>
-</section>
-
 <section class="catalog-page">
-  <h1 class="catalog-title">Catálogo Clorofitum</h1>
+  <h1 class="catalog-title">Linhas Clorofitum</h1>
 
   <div class="product-grid">
-    @for (product of filteredProducts; track product.id) {
-      <div class="product-card" (click)="openProductModal(product)">
+    @for (line of lines; track line.id) {
+      <div class="product-card" (click)="openLineModal(line)">
         <div class="product-image-wrapper">
-          <img [src]="product.image" [alt]="product.title" class="product-image" />
+          <img [src]="line.coverImage" [alt]="line.name" class="product-image" />
         </div>
+        
       </div>
     }
   </div>
 </section>
 
-@if (showModal && selectedProduct) {
+<!-- MODAL DA LINHA -->
+@if (showModal && selectedLine) {
   <div class="modal-overlay" (click)="closeModal()">
     <div class="modal" (click)="$event.stopPropagation()">
       <button class="close-btn" (click)="closeModal()">×</button>
 
-      <!-- Cabeçalho -->
+      <!-- Cabeçalho da Linha -->
       <div class="modal-header">
-        <span class="line-badge">{{ selectedProduct.category }}</span>
-        <h2 class="modal-title" [style.--cor]="selectedProduct.cor">{{ selectedProduct.title }}</h2>
-        <p class="modal-subtitle">{{ selectedProduct.description }}</p>
+        <span class="line-badge">Coleção</span>
+        <h2 class="modal-title" [style.--cor]="selectedLine.cor">{{ selectedLine.name }}</h2>
+        <p class="modal-subtitle">{{ selectedLine.description }}</p>
       </div>
 
-      <!-- Ativos da linha -->
-      @if (selectedProduct.information?.length) {
-        <div class="modal-ativos">
+      <div class="modal-divider"></div>
+
+      <!-- LISTA DE PRODUTOS -->
+      <div class="modal-products-list">
+        
+        <!-- O LAÇO DOS PRODUTOS COMEÇA AQUI -->
+        @for (product of selectedLine.products; track product.id) {
+          
+          <div class="modal-details" style="margin-bottom: 15px; border-bottom: 1px solid #f5f5f5; padding-bottom: 15px;">
+            <div class="modal-image-wrap">
+              <div class="main-image-container">
+                <img
+                  [src]="product['activeImage'] || product.imageCard || product.imageCard2 || product.image"
+                  [alt]="product.nameproduct"
+                  class="modal-image zoomable"
+                  (click)="openZoom(product['activeImage'] || product.imageCard || product.imageCard2 || product.image)"
+                />
+              </div>
+
+              <div class="product-thumbnails-gallery">
+                @if (product.imageCard) {
+                  <img 
+                    [src]="product.imageCard" 
+                    class="thumb-image" 
+                    [class.thumb-active]="(product.activeImage || product.imageCard) === product.imageCard"
+                    (click)="product.activeImage = product.imageCard"
+                  />
+                }
+                @if (product.imageCard2) {
+                  <img 
+                    [src]="product.imageCard2" 
+                    class="thumb-image" 
+                    [class.thumb-active]="product.activeImage === product.imageCard2"
+                    (click)="product.activeImage = product.imageCard2"
+                  />
+                }
+                @if (product.imageCard3) {
+                  <img 
+                    [src]="product.imageCard3" 
+                    class="thumb-image" 
+                    [class.thumb-active]="product.activeImage === product.imageCard3"
+                    (click)="product.activeImage = product.imageCard3"
+                  />
+                }
+              </div>
+            </div>
+
+            <div class="modal-info">
+              <p class="product-category">{{ product.category }}</p>
+              <h4 class="product-title-detail" style="margin-top: 5px; margin-bottom: 5px;">{{ product.nameproduct }}</h4>
+
+              <div class="price-block">
+                @if (product.price_descont) {
+                  <span class="price-from">De {{ product.price }}</span>
+                  <span class="price-main">{{ product.price_descont }}</span>
+                } @else {
+                  <span class="price-main">{{ product.price }}</span>
+                }
+              </div>
+
+              <button class="add-to-cart-btn" (click)="addToCart(product)">
+                🛒 Adicionar ao carrinho
+              </button>
+              <button class="btn-whatsapp" (click)="openWhatsapp()">
+                Pedir pelo WhatsApp
+              </button>
+            </div>
+          </div>
+
+          <!-- NOTAS OLFATIVAS DO PERFUME (Ainda DENTRO do @for) -->
+          @if (product.information?.length) {
+            <div class="product-specific-info">
+              <h5 class="product-specific-title">Pirâmide Olfativa / Detalhes:</h5>
+              <ul class="product-specific-list">
+                @for (info of product.information; track $index) {
+                  <li class="product-specific-item">
+                    <strong [style.color]="product.cor">{{ info.name }}:</strong> {{ info.description }}
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+          
+        } <!-- AQUI O LAÇO DOS PRODUTOS TERMINA! -->
+
+      </div>
+
+      <!-- ATIVOS GERAIS DA LINHA (Fica de fora do @for dos produtos) -->
+      @if (selectedLine.information?.length) {
+        <div class="modal-ativos" style="margin-top: 20px;">
           <h3 class="ativos-title">Principais ativos da linha</h3>
           <div class="ativos-list">
-            @for (ativo of selectedProduct.information; track $index) {
+            @for (ativo of selectedLine.information; track $index) {
               <div class="ativo-item">
-                <span class="ativo-name">{{ ativo.name }}</span>
+                <span class="ativo-name">{{ ativo.name }}:</span>
                 <span class="ativo-desc">{{ ativo.description }}</span>
               </div>
             }
@@ -127,65 +164,15 @@
         </div>
       }
 
-      <!-- Divisor -->
-      <div class="modal-divider"></div>
-
-      <!-- Produtos da linha -->
-      <div class="modal-details">
-        <div class="modal-image-wrap">
-          <img
-            [src]="selectedProduct.imageCard"
-            [alt]="selectedProduct.title"
-            class="modal-image"
-          />
-        </div>
-
-        <div class="modal-info">
-          <p class="product-category">{{ selectedProduct.nameproduct }}</p>
-
-          <div class="price-block">
-            @if (selectedProduct.price_descont) {
-              <span class="price-from">De {{ selectedProduct.price }}</span>
-              <span class="price-main">{{ selectedProduct.price_descont }}</span>
-            } @else {
-              <span class="price-main">{{ selectedProduct.price }}</span>
-            }
-          </div>
-
-          <button class="add-to-cart-btn" (click)="addToCart(selectedProduct)">
-            🛒 Adicionar ao carrinho
-          </button>
-          <button class="btn-whatsapp" (click)="openWhatsapp()">
-            Pedir pelo WhatsApp
-          </button>
-        </div>
-      </div>
-
-      <!-- Modo de uso -->
-      @if (selectedProduct.usage?.length) {
-        <div class="modal-section">
+      <!-- MODO DE USO GERAL DA LINHA (Também fora do @for dos produtos) -->
+      @if (selectedLine.usage?.length) {
+        <div class="modal-section usage-section">
           <h3 class="section-title">Modo de uso</h3>
-          <ol class="usage-list">
-            @for (step of selectedProduct.usage; track $index) {
+          <ul class="usage-list">
+            @for (step of selectedLine.usage; track $index) {
               <li>{{ step }}</li>
             }
-          </ol>
-        </div>
-      }
-
-      <!-- Mais da linha -->
-      @if (lineProducts.length) {
-        <div class="modal-section">
-          <h3 class="section-title">Mais da linha {{ selectedProduct.line }}</h3>
-          <div class="line-grid">
-            @for (p of lineProducts; track p.id) {
-              <div class="line-card" (click)="switchProduct(p)">
-                <img [src]="p.imageCard" [alt]="p.title" />
-                <p>{{ p.title }}</p>
-                <span>{{ p.price_descont || p.price }}</span>
-              </div>
-            }
-          </div>
+          </ul>
         </div>
       }
 
@@ -193,15 +180,14 @@
   </div>
 }
 
-
 <section class="catalog-page">
   <h1 class="Kits">Promoções/Kits</h1>
 
   <div class="product-grid">
-    @for (kits of filteredKits; track kits.idKit) {
-      <div class="product-card" (click)="openKitsModal(kits)">
+    @for (kit of kits; track kit.idKit) {
+      <div class="product-card" (click)="openKitsModal(kit)">
         <div class="product-image-wrapper">
-          <img [src]="kits.image" [alt]="kits.title" class="kits-image" />
+          <img [src]="kit.image" [alt]="kit.title" class="kits-image" />
         </div>
       </div>
     }
@@ -214,7 +200,6 @@
 
       <button class="close-btn" (click)="closeKitsModal()">×</button>
 
-      <!-- Cabeçalho -->
       <div class="modal-header">
         <span class="line-badge">{{ selectedKits.line }}</span>
 
@@ -227,7 +212,6 @@
         </p>
       </div>
 
-      <!-- IMAGEM DO KIT -->
       <div class="modal-details">
         <div class="modal-image-wrap">
           <img
@@ -262,6 +246,15 @@
         </div>
       </div>
 
+    </div>
+  </div>
+}
+@if (zoomedImage) {
+  <div class="zoom-overlay" (click)="closeZoom()">
+    <button class="close-zoom-btn" (click)="closeZoom()">×</button>
+    
+    <div class="zoom-content" (click)="$event.stopPropagation()">
+      <img [src]="zoomedImage" class="zoomed-image-large" />
     </div>
   </div>
 }

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Product } from '../models/product.model';
-import { PRODUCTS } from '../data/product.mock';
+import { Line } from '../models/line.models';
+import { LINES } from '../data/line.mocks';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  getProducts(): Product[] {
-    return PRODUCTS;
+  getProducts(): Line[] {
+    return LINES;
   }
 }
 
-export type { Product };
+export type { Line };
