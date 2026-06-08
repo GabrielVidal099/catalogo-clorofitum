@@ -95,18 +95,13 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: #ffffff; /* fundo branco igual ao card */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem;    /* respiro nas bordas */
-  box-sizing: border-box;
+  padding: 0;
 }
 
 .product-image {
 width: 100%;
   height: 100%;
-  object-fit: contain; /* ← era cover, agora contain */
+  object-fit: cover; /* ← era cover, agora contain */
   transition: transform 0.3s ease;
 }
 
@@ -180,6 +175,159 @@ width: 100%;
 
 .add-to-cart-btn:hover {
     background-color: #016920;
+}
+/* =========================================
+   INFORMAÇÕES ESPECÍFICAS DO PRODUTO (Ex: Perfumes)
+   ========================================= */
+.product-specific-info {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.product-specific-title {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.product-specific-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.product-specific-item {
+  margin-bottom: 4px;
+}
+/* =========================================
+   ESTILOS PARA O ZOOM DA IMAGEM (LIGHTBOX)
+   ========================================= */
+
+/* Transforma o cursor em uma lupa para indicar que é clicável */
+.zoomable {
+  cursor: zoom-in;
+  transition: transform 0.2s ease-in-out;
+}
+
+.zoomable:hover {
+  transform: scale(1.02);
+}
+
+/* Fundo escuro que cobre a tela toda */
+.zoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9); /* Fundo bem escuro para dar destaque */
+  z-index: 99999; /* Z-index altíssimo para ficar na frente de TUDO */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: zoom-out; /* Clique fora para fechar */
+}
+
+/* Imagem gigante centralizada */
+.zoom-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.zoomed-image-large {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+  cursor: default;
+}
+
+/* Botão de fechar (X) no topo direito */
+.close-zoom-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 100000;
+  transition: color 0.2s;
+}
+
+.close-zoom-btn:hover {
+  color: #ccc;
+}
+/* =========================================
+   GALERIA DE FOTOS DO PRODUTO (MODAL)
+   ========================================= */
+.modal-image-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.main-image-container {
+  width: 100%;
+  max-width: 250px; /* Controla o tamanho máximo da foto principal */
+  display: flex;
+  justify-content: center;
+}
+
+.product-thumbnails-gallery {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.thumb-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efeito ao passar o mouse na miniatura */
+.thumb-image:hover {
+  border-color: #b8b8b8;
+  transform: scale(1.05);
+}
+
+/* Indicador visual de qual foto está selecionada no momento */
+.thumb-image.thumb-active {
+  border-color: #333333; /* Borda escura destaca a foto ativa */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================
+   MODO DE USO DA LINHA
+   ========================================= */
+.usage-section {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.usage-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.usage-list li {
+  margin-bottom: 8px;
 }
 
 /* =========================
@@ -680,7 +828,10 @@ h1.catclor {
     }
 
     .product-image {
-        height: 180px;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        display: block;
     }
 
     .filters {
