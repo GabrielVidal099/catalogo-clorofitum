@@ -3,9 +3,9 @@ import { clients} from '../models/client.models';
 export const CLIENTS: clients[] = [
 
   {
-    slug: 'carlos',
-    name: 'Carlos',
-    telefone: '5531992171465'
+    slug: 'monalisa',
+    name: 'Monalisa',
+    telefone: '5531972382488'
   },
   {
     slug: 'maria',
