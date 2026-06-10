@@ -144,8 +144,19 @@
               </ul>
             </div>
           }
+          @if (product.usage?.length) {
+            <div class="product-specific-info" style="margin-top: 10px;">
+              <h5 class="product-specific-title">Modo de uso:</h5>
+              <ul class="product-specific-list" style="list-style: disc; padding-left: 20px;">
+                @for (step of product.usage; track $index) {
+                  <li class="product-specific-item" style="margin-bottom: 4px;">{{ step }}</li>
+                }
+              </ul>
+            </div>
+          }
           
         } <!-- AQUI O LAÇO DOS PRODUTOS TERMINA! -->
+        
 
       </div>
 

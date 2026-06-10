@@ -7,7 +7,10 @@ export enum LineName {
   MINAS_PRECIOSAS = 'Minas Preciosas',
   NAMORADAS_DE_MINAS = 'Namoradas de Minas',
   CURINGA = 'Curinga',
-  CTI = 'CTI'
+  KERACEUTIC = 'keraceutic',
+  BOTULINICA = 'Botulínica Capilar',
+  CAUTERIZADOR = 'Cauterizador Capilar',
+  BRUTO = 'Bruto Rústico e Sistemático'
 }
 
 export interface Information {
@@ -26,8 +29,10 @@ export interface Product {
   imageCard: string;
   imageCard2: string;
   imageCard3: string;
+  imageCard4?: string; 
   image: string;
   information?: Information[];
+  usage?: string[];
   activeImage?: string;
 }
 

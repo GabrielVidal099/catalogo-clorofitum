@@ -61,7 +61,7 @@ export class Header {
       total += subtotal;
 
       mensagem += `*Produto ${index + 1}*
-      Nome: ${item.title}
+      Nome: ${item.nameproduct}
       Categoria: ${item.category}
       Quantidade: ${item.quantidade}
       Valor unitário: R$ ${item.precoNumerico.toFixed(2)}
