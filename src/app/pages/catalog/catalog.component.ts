@@ -2,12 +2,14 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  inject,
+  signal,
 } from '@angular/core';
+import { SlicePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-
 import { Line } from '../../core/models/line.models';
 import { ProductService } from '../../core/services/product.service';
 import { Header } from "../../shared/componets/header/header";
@@ -15,46 +17,33 @@ import { clients } from '../../core/models/client.models';
 import { CLIENTS } from '../../core/data/client.mocks';
 import { kits } from '../../core/models/kits.models';
 import { kitsService } from '../../core/services/kits.service';
-
+import { CartService } from '../../core/services/cart.service';
+import { ToastService } from '../../core/services/toast.service';
+import { BannerService, Banner } from '../../core/services/banner.service';
 @Component({
+
   selector: 'app-catalog',
   standalone: true,
-  imports: [NgClass, Header, FormsModule],
+  imports: [NgClass, Header, FormsModule, NgOptimizedImage,SlicePipe],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.css',
 })
 export class CatalogComponent implements OnInit, OnDestroy {
+  private bannerService = inject(BannerService);
+  bannersSignal = signal<Banner[]>([]);
 
   // =========================
   // ESTADOS PRINCIPAIS
   // =========================
-  lines: Line[] = [];
+  get lines() {
+    return this.productService.lines();
+  }
   
   kits: kits[] = [];
   selectedKits: kits | null = null;
   zoomedImage: string | null = null;
   lineKits: kits[] = [];
-  
-  cart: any[] = [];
-
-  // =========================
-  // GETTERS (CARRINHO)
-  // =========================
-  get cartCount(): number {
-    return this.cart.reduce((total, item) => total + item.quantidade, 0);
-  }
-
-  get totalItens(): number {
-    return this.cart.reduce((total, item) => total + item.quantidade, 0);
-  }
-
-  get totalPreco(): number {
-    return this.cart.reduce(
-      (total, item) => total + (item.quantidade * item.precoNumerico),
-      0
-    );
-  }
-
+ 
   // =========================
   // VARIÁVEIS DE CONTROLE
   // =========================
@@ -73,17 +62,17 @@ export class CatalogComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private kitsService: kitsService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public cartService: CartService,
+    public toastService: ToastService,  
   ) {}
 
-  ngOnInit(): void {
-    // 1. Carrega as linhas
-    this.lines = this.productService.getProducts();
-
-    // 2. Carrega os Kits
+ngOnInit(): void {
+// Carrega as linhas e kits normalmente
+    this.carregarBanners();
     this.kits = this.kitsService.getkits();
 
-    // 3. Lógica do Consultor/Slug
+    // Lógica do Consultor/Slug
     const slug = this.route.snapshot.paramMap.get('name');
     if (slug) {
       this.consultor = this.contatos.find(c => c.slug === slug);
@@ -95,7 +84,21 @@ export class CatalogComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.autoSlide);
   }
-
+  // =========================
+  // BANNERS DO BANCO DE DADOS
+  // =========================
+  carregarBanners(): void {
+    this.bannerService.getBanners().subscribe({
+      next: (bannersDoBanco) => {
+        // Atualiza o sinal com os banners ativos vindos do Supabase
+        this.bannersSignal.set(bannersDoBanco);
+        this.totalSlides= bannersDoBanco.length;
+      },
+      error: (erro) => {
+        console.error('Erro ao buscar banners do Supabase:', erro);
+      }
+    });
+  }
   // =========================
   // SLIDER
   // =========================
@@ -137,6 +140,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.showModal = false;
     this.selectedLine = null;
   }
+  
 
   // =========================
   // MODAL DE KITS
@@ -159,64 +163,30 @@ export class CatalogComponent implements OnInit, OnDestroy {
   // CARRINHO
   // =========================
   addToCart(product: any): void {
-    let precoTexto = '';
-    
-    // Verifica se o preço de desconto existe ou está preenchido
-    if (!product.price_descont || product.price_descont.trim() === '') {
-       precoTexto = product.price;
-    } else {
-       precoTexto = product.price_descont;
-    }
-    
-    // Converte a string "R$ XX,XX" para o formato numérico
-    const precoNumerico = Number( 
-      precoTexto
-        .replace(/[^0-9,]/g, '')
-        .replace(',', '.')
-    );
-
-    const existingItem = this.cart.find(item => item.id === product.id);
-
-    if (existingItem) {
-      existingItem.quantidade++;
-    } else {
-      this.cart.push({
-        ...product,
-        precoNumerico,
-        quantidade: 1
-      });
-    }
-
-    this.updateCart();
-  }
-
-  aumentarQuantidade(id: number): void {
-    const item = this.cart.find(item => item.id === id);
-    if (item) {
-      item.quantidade++;
-      this.updateCart();
-    }
-  }
-
-  diminuirQuantidade(id: number): void {
-    const item = this.cart.find(item => item.id === id);
-    if (item) {
-      item.quantidade--;
-      if (item.quantidade <= 0) {
-        this.cart = this.cart.filter(p => p.id !== id);
+    try {
+      let priceText = product.price;
+      if (product.selectedShade && product.selectedShade.priceOverride) {
+        priceText = product.selectedShade.priceOverride;
+      } else if (product.price_descont) {
+        priceText = product.price_descont;
       }
-      this.updateCart();
+
+      // Envia para o serviço do carrinho e pega o nome formatado de volta
+      const finalName = this.cartService.addToCart(product, priceText);
+      
+      // Dispara o alerta pelo serviço de toast
+      this.toastService.trigger(`✅ ${finalName} adicionado ao carrinho!`);
+
+      if (product.selectedShade) {
+        product.selectedShade = undefined;
+      }
+    } catch (error) {
+      console.error('Erro ao adicionar ao carrinho:', error);
     }
   }
+    
+    
 
-  removerItem(id: number): void {
-    this.cart = this.cart.filter(item => item.id !== id);
-    this.updateCart();
-  }
-
-  updateCart(): void {
-    // Lógica futura para atualizar local storage ou enviar para outros componentes
-  }
   // =========================
   // ZOOM DA IMAGEM (LIGHTBOX)
   // =========================
@@ -227,7 +197,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
   closeZoom(): void {
     this.zoomedImage = null;
   }
-
 
   // =========================
   // WHATSAPP
@@ -244,5 +213,4 @@ export class CatalogComponent implements OnInit, OnDestroy {
     const mensagem = encodeURIComponent('Olá, gostaria de mais informações.');
     return `https://wa.me/${this.consultor.telefone}?text=${mensagem}`;
   }
-
 }
