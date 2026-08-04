@@ -1,36 +1,29 @@
 <app-header
-  [cartCount]="cartCount"
-  [cart]="cart"
+  [cartCount]="cartService.cartCount"
+  [cart]="cartService.items()"
   [consultor]="consultor"
-  (aumentar)="aumentarQuantidade($event)"
-  (diminuir)="diminuirQuantidade($event)"
-  (remover)="removerItem($event)"
+  (aumentar)="cartService.aumentarQuantidade($event)"
+  (diminuir)="cartService.diminuirQuantidade($event)"
+  (remover)="cartService.removerItem($event)"
 >
 </app-header>
 
 <section class="carrosel">
   <div class="slides">
-    <img
-      src="https://static.clorofitum.com.br/banner/1780405873718-013960954637864997.png"
-      class="slide"
-      [ngClass]="{ active: current === 0 }"
-    />
-
-    <img
-      src="https://static.clorofitum.com.br/banner/1778851060085-021876536533170432.webp"
-      class="slide"
-      [ngClass]="{ active: current === 1 }"
-    />
-
-    <img
-      src="https://static.clorofitum.com.br/banner/1780405921050-028166713503776863.png"
-      class="slide"
-      [ngClass]="{ active: current === 2 }"
-    />
+    @for (banner of bannersSignal(); track banner.id; let i = $index) {
+      <img
+        [ngSrc]="banner.imageUrl"
+        class="slide"
+        [ngClass]="{ active: current === i }"
+        [alt]="banner.titulo"
+        width="1200"
+        height="400"
+        priority
+      />
+    }
   </div>
 
   <button class="prev" (click)="prevSlide()">&#10094;</button>
-
   <button class="next" (click)="nextSlide()">&#10095;</button>
 </section>
 
@@ -41,151 +34,194 @@
     @for (line of lines; track line.id) {
       <div class="product-card" (click)="openLineModal(line)">
         <div class="product-image-wrapper">
-          <img [src]="line.coverImage" [alt]="line.name" class="product-image" />
+          <img [ngSrc]="line.coverImage" [alt]="line.name" class="product-image" width="300" height="300" />
         </div>
-        
       </div>
     }
   </div>
 </section>
 
-<!-- MODAL DA LINHA -->
 @if (showModal && selectedLine) {
   <div class="modal-overlay" (click)="closeModal()">
     <div class="modal" (click)="$event.stopPropagation()">
       <button class="close-btn" (click)="closeModal()">×</button>
 
-      <!-- Cabeçalho da Linha -->
       <div class="modal-header">
         <span class="line-badge">Coleção</span>
-        <h2 class="modal-title" [style.--cor]="selectedLine.cor">{{ selectedLine.name }}</h2>
+        <h2 class="modal-title" [style.color]="selectedLine.cor">{{ selectedLine.name }}</h2>
         <p class="modal-subtitle">{{ selectedLine.description }}</p>
       </div>
 
       <div class="modal-divider"></div>
 
-      <!-- LISTA DE PRODUTOS -->
+      <!-- ==========================================
+           INFORMAÇÕES GERAIS DA LINHA (ESTILO CATÁLOGO)
+           ========================================== -->
+      @if (selectedLine.information?.length) {
+        <div style="margin-bottom: 20px;">
+          @for (ativo of selectedLine.information; track $index) {
+            <div style="font-size: 15px; line-height: 1.4; color: #333; margin-bottom: 8px;">
+              <strong [style.color]="selectedLine.cor">{{ ativo.name }}:</strong> {{ ativo.description }}
+            </div>
+          }
+        </div>
+      }
+
+      @if (selectedLine.usage?.length) {
+        <div style="margin-bottom: 25px;">
+          <strong style="display: block; font-size: 15px; margin-bottom: 4px;" [style.color]="selectedLine.cor">Modo de uso geral:</strong>
+          <div style="font-size: 15px; line-height: 1.4; color: #333;">
+            @for (step of selectedLine.usage; track $index) {
+              <span style="display: inline;">{{ step }} </span>
+            }
+          </div>
+        </div>
+      }
+
+      @if (selectedLine.information?.length || selectedLine.usage?.length) {
+        <div class="modal-divider"></div>
+      }
+
+      <!-- ==========================================
+           LISTA DE PRODUTOS
+           ========================================== -->
       <div class="modal-products-list">
-        
-        <!-- O LAÇO DOS PRODUTOS COMEÇA AQUI -->
         @for (product of selectedLine.products; track product.id) {
-          
-          <div class="modal-details" style="margin-bottom: 15px; border-bottom: 1px solid #f5f5f5; padding-bottom: 15px;">
+          <div class="modal-details" style="margin-bottom: 30px; border-bottom: 1px solid #eaeaea; padding-bottom: 25px;">
+            
+            <!-- Imagens do Produto -->
             <div class="modal-image-wrap">
               <div class="main-image-container">
                 <img
-                  [src]="product['activeImage'] || product.imageCard || product.imageCard2 || product.image"
+                  [ngSrc]="(product.selectedShade?.imageUrl || product['activeImage']) || product.imageCard || product.imageCard2 || product.image || ''"
                   [alt]="product.nameproduct"
                   class="modal-image zoomable"
-                  (click)="openZoom(product['activeImage'] || product.imageCard || product.imageCard2 || product.image)"
+                  width="400"
+                  height="400"
+                  (click)="openZoom((product.selectedShade?.imageUrl || product['activeImage']) || product.imageCard || product.imageCard2 || product.image || '')"
                 />
               </div>
 
               <div class="product-thumbnails-gallery">
                 @if (product.imageCard) {
-                  <img 
-                    [src]="product.imageCard" 
-                    class="thumb-image" 
-                    [class.thumb-active]="(product.activeImage || product.imageCard) === product.imageCard"
-                    (click)="product.activeImage = product.imageCard"
-                  />
+                  <img [ngSrc]="product.imageCard" class="thumb-image" width="80" height="80"
+                    [class.thumb-active]="(product['activeImage'] || product.imageCard) === product.imageCard"
+                    (click)="product['activeImage'] = product.imageCard" />
                 }
                 @if (product.imageCard2) {
-                  <img 
-                    [src]="product.imageCard2" 
-                    class="thumb-image" 
-                    [class.thumb-active]="product.activeImage === product.imageCard2"
-                    (click)="product.activeImage = product.imageCard2"
-                  />
+                  <img [ngSrc]="product.imageCard2" class="thumb-image" width="80" height="80" 
+                    [class.thumb-active]="product['activeImage'] === product.imageCard2"
+                    (click)="product['activeImage'] = product.imageCard2" />
                 }
                 @if (product.imageCard3) {
-                  <img 
-                    [src]="product.imageCard3" 
-                    class="thumb-image" 
-                    [class.thumb-active]="product.activeImage === product.imageCard3"
-                    (click)="product.activeImage = product.imageCard3"
-                  />
+                  <img [ngSrc]="product.imageCard3" class="thumb-image" width="80" height="80"
+                    [class.thumb-active]="product['activeImage'] === product.imageCard3"
+                    (click)="product['activeImage'] = product.imageCard3" />
                 }
               </div>
             </div>
 
-            <div class="modal-info">
-              <p class="product-category">{{ product.category }}</p>
-              <h4 class="product-title-detail" style="margin-top: 5px; margin-bottom: 5px;">{{ product.nameproduct }}</h4>
-
-              <div class="price-block">
-                @if (product.price_descont) {
-                  <span class="price-from">De {{ product.price }}</span>
-                  <span class="price-main">{{ product.price_descont }}</span>
+            <!-- Informações do Produto (Tipografia Clean) -->
+            <div class="modal-info" style="width: 100%;">
+              
+              <!-- Título e Descrição na mesma linha -->
+              <div style="font-size: 15px; line-height: 1.4; color: #333; margin-bottom: 15px;">
+                <strong [style.color]="selectedLine.cor">{{ product.nameproduct }}:</strong>
+                
+                @if (product.information?.length) {
+                  <span> {{ product.information?.[0]?.description }}</span>
                 } @else {
-                  <span class="price-main">{{ product.price }}</span>
+                  <span> {{ product.category }}</span>
                 }
               </div>
 
-              <button class="add-to-cart-btn" (click)="addToCart(product)">
-                🛒 Adicionar ao carrinho
-              </button>
-              <button class="btn-whatsapp" (click)="openWhatsapp()">
-                Pedir pelo WhatsApp
-              </button>
+              <!-- Modo de uso -->
+             <!-- Modo de uso -->
+              @if (product.usage?.length) {
+                <div style="font-size: 15px; line-height: 1.4; color: #333; margin-bottom: 15px;">
+                  <strong style="display: block; margin-bottom: 4px;" [style.color]="selectedLine.cor">Modo de uso:</strong>
+                  <div>
+                    @for (step of product.usage ?? []; track $index) {
+                      <div [innerHTML]="step" style="margin-bottom: 6px;"></div> 
+                    }
+                  </div>
+                </div>
+              }
+
+              <!-- Demais informações (caso haja mais de uma no banco) -->
+              @if (product.information && product.information.length > 1) {
+                <div style="font-size: 14px; line-height: 1.4; color: #333; margin-bottom: 15px;">
+                  @for (info of product.information | slice:1; track $index) {
+                    <div style="margin-bottom: 6px;">
+                      <strong [style.color]="selectedLine.cor">{{ info.name }}:</strong> <span>{{ info.description }}</span>
+                    </div>
+                  }
+                </div>
+              }
+
+              <!-- Preço Estilizado (R$ Preto Pequeno / Número Grande Colorido) -->
+              <div class="price-block" style="display: flex; align-items: flex-start; margin-bottom: 18px; margin-top: 10px;">
+                <span style="font-size: 18px; font-weight: 900; color: #000; margin-right: 6px; line-height: 1;"></span>
+                
+                @if (product.selectedShade?.priceOverride) {
+                  <span class="price-main" style="font-size: 34px; font-weight: 900; line-height: 0.8; letter-spacing: -1px;" [style.color]="selectedLine.cor">{{ product.selectedShade?.priceOverride }}</span>
+                } @else if (product.price_descont) {
+                  <span class="price-from" style="font-size: 14px; text-decoration: line-through; color: #888; margin-right: 8px; line-height: 1;">{{ product.price }}</span>
+                  <span class="price-main" style="font-size: 34px; font-weight: 900; line-height: 0.8; letter-spacing: -1px;" [style.color]="selectedLine.cor">{{ product.price_descont }}</span>
+                } @else {
+                  <span class="price-main" style="font-size: 34px; font-weight: 900; line-height: 0.8; letter-spacing: -1px;" [style.color]="selectedLine.cor">{{ product.price }}</span>
+                }
+              </div>
+
+              <!-- Aviso de Cor -->
+              @if (product.shades && product.shades.length > 0 && !product.selectedShade) {
+                <div class="selection-warning">
+                  ⚠️ Por favor, selecione uma opção acima para comprar.
+                </div>
+              }
+
+              <!-- Seleção de Cores -->
+              @if (product.shades && product.shades.length > 0) {
+                <div class="color-chart-container" style="margin-bottom: 15px;">
+                  <h5 class="chart-title">
+                    Tom Selecionado: 
+                    <span class="active-shade-text">
+                      @if (product.selectedShade) {
+                        <strong [style.color]="selectedLine.cor">{{ product.selectedShade.code }}</strong> - {{ product.selectedShade.name }}
+                      }
+                    </span>
+                  </h5>
+                  
+                  <div class="circles-grid">
+                    @for (shade of product.shades; track shade.code) {
+                      <button type="button" class="circle-swatch-item" [class.circle-active]="product.selectedShade?.code === shade.code"
+                        (click)="product.selectedShade = shade; product['activeImage'] = undefined" [title]="shade.code + ' - ' + shade.name">
+                        @if (shade.imageUrl) {
+                          <img [ngSrc]="shade.imageUrl" class="color-drop image-drop" [alt]="shade.name" width="40" height="40" />
+                        } @else {
+                          <span class="color-drop" [style.background-color]="shade.colorHex"></span>
+                        }
+                        <span class="color-code-under">{{ shade.code }}</span>
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+
+              <!-- Botões -->
+              <div class="action-buttons-wrap">
+                <button class="add-to-cart-btn" 
+                  [disabled]="product.shades && product.shades.length > 0 && !product.selectedShade"
+                  [style.background-color]="product.shades && product.shades.length > 0 && !product.selectedShade ? '#cccccc' : selectedLine.cor"
+                  (click)="addToCart(product)">
+                  🛒 Adicionar ao carrinho
+                </button>
+              </div>
+
             </div>
           </div>
-
-          <!-- NOTAS OLFATIVAS DO PERFUME (Ainda DENTRO do @for) -->
-          @if (product.information?.length) {
-            <div class="product-specific-info">
-              <h5 class="product-specific-title">Pirâmide Olfativa / Detalhes:</h5>
-              <ul class="product-specific-list">
-                @for (info of product.information; track $index) {
-                  <li class="product-specific-item">
-                    <strong [style.color]="product.cor">{{ info.name }}:</strong> {{ info.description }}
-                  </li>
-                }
-              </ul>
-            </div>
-          }
-          @if (product.usage?.length) {
-            <div class="product-specific-info" style="margin-top: 10px;">
-              <h5 class="product-specific-title">Modo de uso:</h5>
-              <ul class="product-specific-list" style="list-style: disc; padding-left: 20px;">
-                @for (step of product.usage; track $index) {
-                  <li class="product-specific-item" style="margin-bottom: 4px;">{{ step }}</li>
-                }
-              </ul>
-            </div>
-          }
-          
-        } <!-- AQUI O LAÇO DOS PRODUTOS TERMINA! -->
-        
-
+        }
       </div>
-
-      <!-- ATIVOS GERAIS DA LINHA (Fica de fora do @for dos produtos) -->
-      @if (selectedLine.information?.length) {
-        <div class="modal-ativos" style="margin-top: 20px;">
-          <h3 class="ativos-title">Principais ativos da linha</h3>
-          <div class="ativos-list">
-            @for (ativo of selectedLine.information; track $index) {
-              <div class="ativo-item">
-                <span class="ativo-name">{{ ativo.name }}:</span>
-                <span class="ativo-desc">{{ ativo.description }}</span>
-              </div>
-            }
-          </div>
-        </div>
-      }
-
-      <!-- MODO DE USO GERAL DA LINHA (Também fora do @for dos produtos) -->
-      @if (selectedLine.usage?.length) {
-        <div class="modal-section usage-section">
-          <h3 class="section-title">Modo de uso</h3>
-          <ul class="usage-list">
-            @for (step of selectedLine.usage; track $index) {
-              <li>{{ step }}</li>
-            }
-          </ul>
-        </div>
-      }
 
     </div>
   </div>
@@ -198,7 +234,7 @@
     @for (kit of kits; track kit.idKit) {
       <div class="product-card" (click)="openKitsModal(kit)">
         <div class="product-image-wrapper">
-          <img [src]="kit.image" [alt]="kit.title" class="kits-image" />
+          <img [ngSrc]="kit.image" [alt]="kit.title" class="kits-image" width="300" height="300" />
         </div>
       </div>
     }
@@ -208,64 +244,71 @@
 @if (showKitsModal && selectedKits) {
   <div class="modal-overlay" (click)="closeKitsModal()">
     <div class="modal" (click)="$event.stopPropagation()">
-
       <button class="close-btn" (click)="closeKitsModal()">×</button>
 
       <div class="modal-header">
         <span class="line-badge">{{ selectedKits.line }}</span>
-
-        <h2 class="modal-title" [style.--cor]="selectedKits.cor">
-          {{ selectedKits.title }}
-        </h2>
-
-        <p class="modal-subtitle">
-          {{ selectedKits.description }}
-        </p>
+        <h2 class="modal-title" [style.color]="selectedKits.cor">{{ selectedKits.title }}</h2>
+        <p class="modal-subtitle">{{ selectedKits.description }}</p>
       </div>
 
       <div class="modal-details">
         <div class="modal-image-wrap">
-          <img
-            [src]="selectedKits.image"
-            [alt]="selectedKits.title"
-            class="modal-image"
-          />
+          <img [ngSrc]="selectedKits.image" [alt]="selectedKits.title" class="modal-image" width="400" height="400" />
         </div>
 
         <div class="modal-info">
-
           <div class="price-block">
             @if (selectedKits.price_descont) {
-              <span class="price-from">
-                De {{ selectedKits.price }}
-              </span>
-
-              <span class="price-main">
-                {{ selectedKits.price_descont }}
-              </span>
+              <span class="price-from">De {{ selectedKits.price }}</span>
+              <span class="price-main" [style.color]="selectedKits.cor">{{ selectedKits.price_descont }}</span>
             } @else {
-              <span class="price-main">
-                {{ selectedKits.price }}
-              </span>
+              <span class="price-main" [style.color]="selectedKits.cor">{{ selectedKits.price }}</span>
             }
           </div>
 
-          <button class="add-to-cart-btn" (click)="addToCart(selectedKits)">
+          <button 
+            class="add-to-cart-btn" 
+            [style.background-color]="selectedKits.cor" 
+            (click)="addToCart(selectedKits)"
+          >
             🛒 Adicionar ao carrinho
           </button>
-
         </div>
       </div>
-
     </div>
   </div>
 }
+
 @if (zoomedImage) {
   <div class="zoom-overlay" (click)="closeZoom()">
     <button class="close-zoom-btn" (click)="closeZoom()">×</button>
     
     <div class="zoom-content" (click)="$event.stopPropagation()">
-      <img [src]="zoomedImage" class="zoomed-image-large" />
+      <img [ngSrc]="zoomedImage" class="zoomed-image-large" width="800" height="800" />
     </div>
   </div>
 }
+
+<div class="toast-container">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div class="toast-card">
+      <div class="toast-content">
+        {{ toast.message }}
+      </div>
+    </div>
+  }
+
+</div> 
+
+<section>
+  <footer style="text-align: center; padding: 20px; font-family: sans-serif; background-color: #f1f1f1;">
+  <p style="margin: 0; color: #333;">
+    &copy; 2026 [Clorofitum Cosméticos]. Todos os direitos reservados.
+  </p>
+  <p style="margin: 5px 0 0 0; font-size: 0.85em; color: #666;">
+    Desenvolvido por <a href="https://www.linkedin.com/in/gabriel-augusto-925b44384/" target="_blank" style="color: #0077b5; text-decoration: none; font-weight: bold;">Gabriel Augusto</a>
+  </p>
+  
+</footer>
+</section>
